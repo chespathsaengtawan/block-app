@@ -250,8 +250,16 @@ app.MapGet("/health", async (AppDbContext db) =>
 
 #region Run
 
-// Railway injects PORT env var; fallback to 8080
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Run($"http://0.0.0.0:{port}");
+// Production (Railway): bind to PORT env var
+// Development: use launchSettings.json (dotnet run / dotnet watch)
+if (app.Environment.IsProduction())
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    app.Run($"http://0.0.0.0:{port}");
+}
+else
+{
+    app.Run();
+}
 
 #endregion

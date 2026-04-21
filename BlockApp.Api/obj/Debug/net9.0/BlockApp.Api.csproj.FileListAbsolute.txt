@@ -167,3 +167,5 @@ D:\MAUI\block-app\BlockApp.Api\obj\Debug\net9.0\BlockApp.Api.pdb
 D:\MAUI\block-app\BlockApp.Api\obj\Debug\net9.0\BlockApp.Api.genruntimeconfig.cache
 D:\MAUI\block-app\BlockApp.Api\obj\Debug\net9.0\ref\BlockApp.Api.dll
 D:\MAUI\block-app\BlockApp.Api\bin\Debug\net9.0\Omise.dll
+D:\MAUI\block-app\BlockApp.Api\bin\Debug\net9.0\Scalar.AspNetCore.dll
+D:\MAUI\block-app\BlockApp.Api\obj\Debug\net9.0\BlockApp.Api.sourcelink.json

@@ -32,6 +32,8 @@ appsettings.Local.json
 *.db-wal
 *.db-shm
 BlockApp.Api/app/data/
+BlockApp.Api/bin/
+BlockApp.Api/obj/
 
 # ===== HTTP Test Files (อาจมี token/key ใน request) =====
 *.http

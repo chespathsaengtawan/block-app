@@ -9,3 +9,4 @@ D:\MAUI\block-app\BlockApp.Shared\obj\Debug\net9.0\BlockApp.Shared.dll
 D:\MAUI\block-app\BlockApp.Shared\obj\Debug\net9.0\refint\BlockApp.Shared.dll
 D:\MAUI\block-app\BlockApp.Shared\obj\Debug\net9.0\BlockApp.Shared.pdb
 D:\MAUI\block-app\BlockApp.Shared\obj\Debug\net9.0\ref\BlockApp.Shared.dll
+D:\MAUI\block-app\BlockApp.Shared\obj\Debug\net9.0\BlockApp.Shared.sourcelink.json
