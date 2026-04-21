@@ -1,5 +1,52 @@
-/.vs
-/.vscode
-/DEBUG.md
-/plan.md
-/Todo.md
+# ===== IDE =====
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ===== Build Outputs =====
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+publish/
+out/
+
+# ===== .NET =====
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.nupkg
+*.snupkg
+
+# ===== Sensitive Config (Secrets - ห้าม commit ลง repo) =====
+appsettings.Secrets.json
+appsettings.Production.json
+appsettings.Local.json
+**/secrets.json
+
+# ===== SQLite Database =====
+*.db
+*.db-wal
+*.db-shm
+BlockApp.Api/app/data/
+
+# ===== HTTP Test Files (อาจมี token/key ใน request) =====
+*.http
+
+# ===== MAUI / Mobile =====
+BlockApp.App/BlockApp.App.sln
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== Docs / Dev Notes =====
+DEBUG.md
+plan.md
+Todo.md
+**/*.md
+!README.md
