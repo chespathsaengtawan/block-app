@@ -5,17 +5,16 @@ BlockApp.App/
 **/bin/
 **/obj/
 
-# Ignore local dev files
+# Ignore local SQLite database
 **/*.db
 **/*.db-wal
 **/*.db-shm
 BlockApp.Api/app/data/
 
-# Ignore IDE and user files
+# Ignore IDE files
 **/.vs/
 **/.vscode/
 **/*.user
 
 # Ignore git
 .git/
-.gitignore
