@@ -147,14 +147,15 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Health check for Railway
+app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
+
 #endregion
 
 #region Run
 
-// ✅ Cloud Run ใช้ PORT จาก env
-//var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-//app.Run($"http://0.0.0.0:{port}");
-// ✅ Local Dev
-app.Run();
+// Railway injects PORT env var; fallback to 8080
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Run($"http://0.0.0.0:{port}");
 
 #endregion
