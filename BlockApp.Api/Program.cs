@@ -9,6 +9,7 @@ using BlockApp.Api.Services;
 using BlockApp.Api.Services.Sms;
 using BlockApp.Api.Services.Interfaces;
 using BlockApp.Api.Services.Interfaces.Sms;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,8 +31,73 @@ builder.Services.AddControllers()
     }
 );
 
-// OpenAPI (Built-in .NET 10)
-builder.Services.AddOpenApi();
+// OpenAPI
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info.Title = "BlockApp API";
+        document.Info.Description = "API สำหรับ BlockApp - ระบบจัดการบล็อกและการชำระเงิน";
+        document.Info.Version = "v1.0.0";
+
+        // JWT Bearer security scheme — required for Scalar auth
+        document.Components.SecuritySchemes["Bearer"] = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+        {
+            Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = "Enter JWT token (without 'Bearer' prefix)"
+        };
+
+        document.SecurityRequirements.Add(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+        {
+            {
+                new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                    {
+                        Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+
+        return Task.CompletedTask;
+    });
+});
+
+// ===== CORS =====
+// MAUI native app ไม่ส่ง Origin header → ไม่กระทบ CORS
+// Block browser-based access: Dev เปิด localhost, Prod ปิดทั้งหมด
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("BlockAppPolicy", policy =>
+    {
+        if (builder.Environment.IsDevelopment())
+        {
+            // Dev: อนุญาต localhost ทุก port สำหรับ Swagger / testing
+            policy
+                .WithOrigins(
+                    "http://localhost",
+                    "https://localhost"
+                )
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }
+        else
+        {
+            // Production: ปฏิเสธ browser-based requests ทั้งหมด
+            // MAUI native app ไม่ส่ง Origin header → ผ่านได้ปกติ
+            policy
+                .WithOrigins(Array.Empty<string>())
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }
+    });
+});
 
 // Database - SQLite (Dev) / PostgreSQL (Production)
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -132,14 +198,25 @@ using (var scope = app.Services.CreateScope())
 
 #region Middleware Pipeline
 
-// Swagger (เฉพาะ Dev)
-//if OpenAPI Documentation (Dev only)
+// Scalar API Reference (Dev only)
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        options.Title = "BlockApp API";
+        options.Theme = ScalarTheme.DeepSpace;
+        options.DefaultHttpClient = new(ScalarTarget.CSharp, ScalarClient.HttpClient);
+        options.Authentication = new ScalarAuthenticationOptions
+        {
+            PreferredSecuritySchemes = ["Bearer"]
+        };
+    });
 }
 // ✅ Global Exception Middleware (ต้องอยู่บนสุด)
 app.UseMiddleware<GlobalExceptionMiddleware>();
+
+app.UseCors("BlockAppPolicy");
 
 // Standard ASP.NET middleware
 app.UseAuthentication();
@@ -148,7 +225,26 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Health check for Railway
-app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
+app.MapGet("/health", async (AppDbContext db) =>
+{
+    try
+    {
+        var canConnect = await db.Database.CanConnectAsync();
+        if (!canConnect)
+            return Results.Json(new { status = "unhealthy", database = "unreachable" }, statusCode: 503);
+
+        return Results.Ok(new
+        {
+            status = "healthy",
+            database = "connected",
+            timestamp = DateTime.UtcNow
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Json(new { status = "unhealthy", error = ex.Message }, statusCode: 503);
+    }
+}).AllowAnonymous();
 
 #endregion
 

@@ -50,7 +50,7 @@ public class ApiService
         try
         {
             var response = await _httpClient.PostAsJsonAsync(
-                "/api/auth/request-otp",
+                "/blockapp/auth/request-otp",
                 new RequestOtpDto { PhoneNumber = phoneNumber, FromService = SmsProvider.ThaibulkSMS });
 
             if (response.IsSuccessStatusCode)
@@ -73,7 +73,7 @@ public class ApiService
         try
         {
             var response = await _httpClient.PostAsJsonAsync(
-                "/api/auth/verify-otp",
+                "/blockapp/auth/verify-otp",
                 new VerifyOtpDto
                 {
                     PhoneNumber = phoneNumber,
@@ -126,7 +126,7 @@ public class ApiService
         try
         {
             var response = await _httpClient.PostAsJsonAsync(
-                "/api/blocklist",
+                "/blockapp/blocklist",
                 new BlockNumberCreateDto { PhoneNumber = phoneNumber, Note = note });
             return response.IsSuccessStatusCode;
         }
@@ -140,7 +140,7 @@ public class ApiService
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"/api/blocklist/{id}");
+            var response = await _httpClient.DeleteAsync($"/blockapp/blocklist/{id}");
             return response.IsSuccessStatusCode;
         }
         catch
@@ -160,7 +160,7 @@ public class ApiService
         try
         {
             var response = await _httpClient.PostAsJsonAsync(
-                "/api/auth/check-phone",
+                "/blockapp/auth/check-phone",
                 new CheckPhoneDto { PhoneNumber = phoneNumber });
 
             if (response.IsSuccessStatusCode)
@@ -184,7 +184,7 @@ public class ApiService
             if (string.IsNullOrEmpty(refreshToken)) return false;
 
             var response = await _httpClient.PostAsJsonAsync(
-                "/api/auth/refresh",
+                "/blockapp/auth/refresh",
                 new RefreshTokenDto { RefreshToken = refreshToken });
 
             if (response.IsSuccessStatusCode)
@@ -258,7 +258,7 @@ public class ApiService
     // Generic HTTP methods
     public async Task<T> GetAsync<T>(string endpoint)
     {
-        var response = await _httpClient.GetAsync($"/api/{endpoint}");
+        var response = await _httpClient.GetAsync($"/blockapp/{endpoint}");
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<T>(_jsonOptions) 
             ?? throw new Exception("Failed to deserialize response");
@@ -266,7 +266,7 @@ public class ApiService
 
     public async Task<T> PostAsync<T>(string endpoint, object data)
     {
-        var response = await _httpClient.PostAsJsonAsync($"/api/{endpoint}", data, _jsonOptions);
+        var response = await _httpClient.PostAsJsonAsync($"/blockapp/{endpoint}", data, _jsonOptions);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<T>(_jsonOptions)
             ?? throw new Exception("Failed to deserialize response");
@@ -274,7 +274,7 @@ public class ApiService
 
     public async Task DeleteAsync(string endpoint)
     {
-        var response = await _httpClient.DeleteAsync($"/api/{endpoint}");
+        var response = await _httpClient.DeleteAsync($"/blockapp/{endpoint}");
         response.EnsureSuccessStatusCode();
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BlockApp.Api.Controllers
 {
     [ApiController]
-    [Route("api/auth")]
+    [Route("blockapp/auth")]
     public class AuthController : ControllerBase
     {
         private readonly IOtpService _otpService;

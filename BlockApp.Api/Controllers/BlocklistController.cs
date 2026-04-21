@@ -13,7 +13,7 @@ namespace BlockApp.Api.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api/blocklist")]
+    [Route("blockapp/blocklist")]
     public class BlocklistController : ControllerBase
     {
         private readonly AppDbContext _db;

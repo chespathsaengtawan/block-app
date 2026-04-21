@@ -937,6 +937,22 @@
           "lib/netstandard2.1/Omise.dll": {}
         }
       },
+      "Scalar.AspNetCore/2.14.1": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.10": {
         "type": "package",
         "dependencies": {
@@ -3377,6 +3393,25 @@
         "omise.nuspec"
       ]
     },
+    "Scalar.AspNetCore/2.14.1": {
+      "sha512": "neS3aI7YVPDY7+I9U8nYXvSnSy6lPvGyn5w52m0MCvC5COajK4HF4vsx70OO6Fw9bd7WXOUikSBdUaLfyTzw3g==",
+      "type": "package",
+      "path": "scalar.aspnetcore/2.14.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net10.0/Scalar.AspNetCore.dll",
+        "lib/net10.0/Scalar.AspNetCore.xml",
+        "lib/net8.0/Scalar.AspNetCore.dll",
+        "lib/net8.0/Scalar.AspNetCore.xml",
+        "lib/net9.0/Scalar.AspNetCore.dll",
+        "lib/net9.0/Scalar.AspNetCore.xml",
+        "scalar.aspnetcore.2.14.1.nupkg.sha512",
+        "scalar.aspnetcore.nuspec"
+      ]
+    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.10": {
       "sha512": "UxWuisvZ3uVcVOLJQv7urM/JiQH+v3TmaJc1BLKl5Dxfm/nTzTUrqswCqg/INiYLi61AXnHo1M1JPmPqqLnAdg==",
       "type": "package",
@@ -4980,6 +5015,7 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 9.0.4",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.4",
       "Omise >= 4.3.0",
+      "Scalar.AspNetCore >= 2.14.1",
       "Twilio >= 7.14.3"
     ]
   },
@@ -5065,6 +5101,10 @@
           "Omise": {
             "target": "Package",
             "version": "[4.3.0, )"
+          },
+          "Scalar.AspNetCore": {
+            "target": "Package",
+            "version": "[2.14.1, )"
           },
           "Twilio": {
             "target": "Package",

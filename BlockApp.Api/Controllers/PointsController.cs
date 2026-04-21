@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace BlockApp.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("blockapp/[controller]")]
 [Authorize]
 public class PointsController : ControllerBase
 {

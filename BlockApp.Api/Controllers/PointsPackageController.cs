@@ -7,7 +7,7 @@ using BlockApp.Shared.Entities;
 namespace BlockApp.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("blockapp/[controller]")]
 [Authorize] // TODO: Add Admin role check
 public class PointsPackageController : ControllerBase
 {
