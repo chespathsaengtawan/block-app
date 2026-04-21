@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BlockApp.App.Pages.QrPaymentPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Header -->
+        <Border Grid.Row="0" BackgroundColor="White" Padding="20,50,20,16" StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.05"/>
+            </Border.Shadow>
+            <Label Text=" " FontSize="20" FontAttributes="Bold" TextColor="#111827"/>
+        </Border>
+
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="20" HorizontalOptions="Center">
+
+                <!-- QR Code -->
+                <Border BackgroundColor="White" StrokeThickness="2" Stroke="#E5E7EB" 
+                        Padding="20" HorizontalOptions="Center">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="16"/></Border.StrokeShape>
+                    <Image x:Name="QrCodeImage" 
+                           WidthRequest="250" HeightRequest="250"
+                           Aspect="AspectFit"/>
+                </Border>
+
+                <!-- Amount Info -->
+                <Border BackgroundColor="#F9FAFB" StrokeThickness="0" Padding="20,16">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                    <VerticalStackLayout Spacing="12">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="จำนวนเงิน" TextColor="#6B7280" FontSize="14"/>
+                            <Label x:Name="AmountLabel" Grid.Column="1" Text="฿100" 
+                                   TextColor="#111827" FontSize="18" FontAttributes="Bold"/>
+                        </Grid>
+                        <BoxView HeightRequest="1" Color="#E5E7EB"/>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="พอยต์ที่ได้รับ" TextColor="#6B7280" FontSize="14"/>
+                            <Label x:Name="PointsLabel" Grid.Column="1" Text="100 พอยต์" 
+                                   TextColor="#7C3AED" FontSize="16" FontAttributes="Bold"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Timer -->
+                <Border BackgroundColor="#FEF2F2" StrokeThickness="1" Stroke="#FCA5A5" Padding="12,8">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="8"/></Border.StrokeShape>
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Label Text="0x23F3" FontSize="16"/>
+                        <Label x:Name="TimerLabel" Text="เหลือเวลา 15:00 นาที" 
+                               TextColor="#DC2626" FontSize="13" FontAttributes="Bold"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Status -->
+                <Border x:Name="StatusBorder" BackgroundColor="#EFF6FF" StrokeThickness="1" 
+                        Stroke="#BFDBFE" Padding="16,12" IsVisible="False">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <HorizontalStackLayout Spacing="12">
+                        <ActivityIndicator x:Name="StatusLoader" IsRunning="True" Color="#3B82F6"/>
+                        <Label x:Name="StatusLabel" Text="กำลังตรวจสอบการชำระเงิน..." 
+                               TextColor="#1E40AF" FontSize="13"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Instructions -->
+                <VerticalStackLayout Spacing="8" Margin="0,8,0,0">
+                    <Label Text="วิธีการชำระเงิน:" FontSize="14" FontAttributes="Bold" TextColor="#111827"/>
+                    <Label Text="1. เปิดแอป Mobile Banking" FontSize="13" TextColor="#6B7280"/>
+                    <Label Text="2. เลือกสแกน QR Code" FontSize="13" TextColor="#6B7280"/>
+                    <Label Text="3. สแกน QR Code ที่ปรากฏ" FontSize="13" TextColor="#6B7280"/>
+                    <Label Text="4. ยืนยันการชำระเงิน" FontSize="13" TextColor="#6B7280"/>
+                    <Label Text="5. รอการยืนยันผล (1-2 นาที)" FontSize="13" TextColor="#6B7280"/>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom Button -->
+        <Border Grid.Row="2" BackgroundColor="White" Padding="20,16" StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,-2" Radius="8" Opacity="0.06"/>
+            </Border.Shadow>
+            <Border x:Name="CheckButton" BackgroundColor="#7C3AED" HeightRequest="52" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnCheckPaymentTapped"/>
+                </Border.GestureRecognizers>
+                <Label Text="ตรวจสอบการชำระเงิน" 
+                       TextColor="White" FontSize="15" FontAttributes="Bold"
+                       HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+        </Border>
+
+    </Grid>
+</ContentPage>

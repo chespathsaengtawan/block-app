@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BlockApp.App.Pages.AddBlockPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Header -->
+        <Border Grid.Row="0" BackgroundColor="White" Padding="20,50,20,16" StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.05"/>
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*,auto">
+
+                <VerticalStackLayout Grid.Column="0" Spacing="2" Margin="14,0,24,0" VerticalOptions="Center">
+                    <Label Text="เพิ่มเบอร์บล็อก" FontSize="20" FontAttributes="Bold" TextColor="#111827"/>
+                    <Label Text="กรอกเบอร์โทรที่ต้องการบล็อก" FontSize="13" TextColor="#6B7280"/>
+                </VerticalStackLayout>
+                
+                <Border 
+                    Grid.Column="1"
+                    BackgroundColor="#F3F4F6" 
+                    WidthRequest="38" HeightRequest="38"
+                    VerticalOptions="Center" 
+                    StrokeThickness="0">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="19"/></Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCloseTapped"/>
+                    </Border.GestureRecognizers>
+                    <Label 
+                        Text="&#x2715;" 
+                        FontSize="14" 
+                        TextColor="#374151"
+                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Border>                
+            </Grid>
+        </Border>
+
+        <!-- Form -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,24" Spacing="20">
+
+                <!-- Phone Number -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="เบอร์โทรศัพท์" FontSize="14" FontAttributes="Bold" TextColor="#374151"/>
+                    <Border Stroke="#E5E7EB" StrokeThickness="1.5" BackgroundColor="#F9FAFB"
+                            Padding="16,0" HeightRequest="52">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                        <Entry x:Name="PhoneEntry"
+                               Placeholder="+66 8X-XXXX-XXXX"
+                               PlaceholderColor="#9CA3AF"
+                               TextColor="#111827"
+                               FontSize="16"
+                               BackgroundColor="Transparent"
+                               Keyboard="Telephone"
+                               VerticalOptions="Center"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Note -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="หมายเหตุ (ไม่บังคับ)" FontSize="14" FontAttributes="Bold" TextColor="#374151"/>
+                    <Border Stroke="#E5E7EB" StrokeThickness="1.5" BackgroundColor="#F9FAFB" Padding="16,12">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                        <Editor x:Name="NoteEditor"
+                                Placeholder="เช่น สายแอบอ้าง, โรบอทคอล..."
+                                PlaceholderColor="#9CA3AF"
+                                TextColor="#111827"
+                                FontSize="14"
+                                BackgroundColor="Transparent"
+                                HeightRequest="80"
+                                AutoSize="TextChanges"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Info box -->
+                <Border BackgroundColor="#F0FDF4" Stroke="#BBF7D0" StrokeThickness="1" Padding="14,12">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Label Text="&#x2139;&#xFE0F;" FontSize="15" VerticalOptions="Start" Margin="0,2,8,0"/>
+                        <Label Grid.Column="1" FontSize="13" TextColor="#166534" LineBreakMode="WordWrap"
+                               Text="เบอร์ที่บล็อกจะถูกบันทึกและแชร์กับระบบเพื่อป้องกันสายรบกวน"/>
+                    </Grid>
+                </Border>
+                <Grid Padding="24,16">
+                    <Border BackgroundColor="#7C3AED" HeightRequest="52" Padding="0" StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12"/>
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnSubmitTapped"/>
+                        </Border.GestureRecognizers>
+                        <Grid>
+                            <Label x:Name="SubmitLbl"
+                        Text="บล็อกเบอร์นี้"
+                        TextColor="White" FontSize="15" FontAttributes="Bold"
+                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <ActivityIndicator x:Name="SubmitLoader"
+                        IsRunning="False" IsVisible="False"
+                        Color="White"
+                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Submit Button -->
+        <!--
+        <Border Grid.Row="2" BackgroundColor="White" Padding="24,16" StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,-2" Radius="8" Opacity="0.06"/>
+            </Border.Shadow>
+            <Border BackgroundColor="#7C3AED" HeightRequest="52" Padding="0" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSubmitTapped"/>
+                </Border.GestureRecognizers>
+                <Grid>
+                    <Label x:Name="SubmitLbl"
+                        Text="บล็อกเบอร์นี้"
+                        TextColor="White" FontSize="15" FontAttributes="Bold"
+                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <ActivityIndicator x:Name="SubmitLoader"
+                        IsRunning="False" IsVisible="False"
+                        Color="White"
+                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+        </Border>
+        -->
+    </Grid>
+</ContentPage>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BlockApp.App.Pages.SplashPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+
+    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="24">
+
+        <!-- App icon -->
+        <Grid WidthRequest="90" HeightRequest="78" HorizontalOptions="Center">
+            <Border BackgroundColor="#DB2777"
+                    WidthRequest="58" HeightRequest="48"
+                    HorizontalOptions="End" VerticalOptions="Start">
+                <Border.StrokeShape><RoundRectangle CornerRadius="14,14,14,2"/></Border.StrokeShape>
+                <Border.Stroke>Transparent</Border.Stroke>
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                    <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                    <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                    <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                </HorizontalStackLayout>
+            </Border>
+            <Border BackgroundColor="#7C3AED"
+                    WidthRequest="58" HeightRequest="48"
+                    HorizontalOptions="Start" VerticalOptions="End">
+                <Border.StrokeShape><RoundRectangle CornerRadius="14,14,2,14"/></Border.StrokeShape>
+                <Border.Stroke>Transparent</Border.Stroke>
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                    <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                    <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                    <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                </HorizontalStackLayout>
+            </Border>
+        </Grid>
+
+        <Label Text="Block App"
+               FontSize="28" FontAttributes="Bold"
+               TextColor="#111827"
+               HorizontalTextAlignment="Center"/>
+
+        <ActivityIndicator IsRunning="True"
+                           Color="#7C3AED"
+                           WidthRequest="36" HeightRequest="36"/>
+
+    </VerticalStackLayout>
+
+</ContentPage>

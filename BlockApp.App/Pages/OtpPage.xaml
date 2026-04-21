@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BlockApp.App.Pages.OtpPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="32,60,32,32"
+            Spacing="0"
+            VerticalOptions="Center">
+
+            <!-- Chat Bubble Icon -->
+            <Grid WidthRequest="90" HeightRequest="78"
+                  HorizontalOptions="Center" Margin="0,0,0,32">
+
+                <!-- Back bubble (pink) -->
+                <Border BackgroundColor="#DB2777"
+                        WidthRequest="58" HeightRequest="48"
+                        HorizontalOptions="End" VerticalOptions="Start">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14,14,14,2"/>
+                    </Border.StrokeShape>
+                    <Border.Stroke>Transparent</Border.Stroke>
+                    <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Front bubble (purple) -->
+                <Border BackgroundColor="#7C3AED"
+                        WidthRequest="58" HeightRequest="48"
+                        HorizontalOptions="Start" VerticalOptions="End">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14,14,2,14"/>
+                    </Border.StrokeShape>
+                    <Border.Stroke>Transparent</Border.Stroke>
+                    <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                    </HorizontalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Title -->
+            <Label Text="การยืนยันหมายเลขโทรศัพท์"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="#111827"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,12"/>
+
+            <!-- Subtitle -->
+            <Label x:Name="SubtitleLabel"
+                   Text="กรุณากรอกรหัส OTP ที่ส่งไปยังหมายเลขโทรศัพท์ของคุณ"
+                   FontSize="14"
+                   TextColor="#6B7280"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap"
+                   Margin="0,0,0,36"/>
+
+            <!-- 6 OTP Input Boxes -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="8" Margin="0,0,0,40">
+
+                <Border x:Name="Box1Border" Stroke="#E5E7EB" StrokeThickness="2"
+                        WidthRequest="50" HeightRequest="60" BackgroundColor="White">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Entry x:Name="Otp1"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           FontSize="22" FontAttributes="Bold"
+                           TextColor="#111827"
+                           BackgroundColor="Transparent"
+                           Keyboard="Numeric"
+                           Placeholder="0"
+                           TextChanged="OnOtp1Changed"/>
+                </Border>
+
+                <Border x:Name="Box2Border" Stroke="#E5E7EB" StrokeThickness="2"
+                        WidthRequest="50" HeightRequest="60" BackgroundColor="White">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Entry x:Name="Otp2"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           FontSize="22" FontAttributes="Bold"
+                           TextColor="#111827"
+                           BackgroundColor="Transparent"
+                           Keyboard="Numeric"
+                           Placeholder="0"
+                           TextChanged="OnOtp2Changed"/>
+                </Border>
+
+                <Border x:Name="Box3Border" Stroke="#E5E7EB" StrokeThickness="2"
+                        WidthRequest="50" HeightRequest="60" BackgroundColor="White">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Entry x:Name="Otp3"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           FontSize="22" FontAttributes="Bold"
+                           TextColor="#111827"
+                           BackgroundColor="Transparent"
+                           Keyboard="Numeric"
+                           Placeholder="0"
+                           TextChanged="OnOtp3Changed"/>
+                </Border>
+
+                <Border x:Name="Box4Border" Stroke="#E5E7EB" StrokeThickness="2"
+                        WidthRequest="50" HeightRequest="60" BackgroundColor="White">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Entry x:Name="Otp4"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           FontSize="22" FontAttributes="Bold"
+                           TextColor="#111827"
+                           BackgroundColor="Transparent"
+                           Keyboard="Numeric"
+                           Placeholder="0"
+
+                           TextChanged="OnOtp4Changed"/>
+                </Border>
+
+                <Border x:Name="Box5Border" Stroke="#E5E7EB" StrokeThickness="2"
+                        WidthRequest="50" HeightRequest="60" BackgroundColor="White">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Entry x:Name="Otp5"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           FontSize="22" FontAttributes="Bold"
+                           TextColor="#111827"
+                           BackgroundColor="Transparent"
+                           Keyboard="Numeric"
+                           Placeholder="0"
+
+                           TextChanged="OnOtp5Changed"/>
+                </Border>
+
+                <Border x:Name="Box6Border" Stroke="#E5E7EB" StrokeThickness="2"
+                        WidthRequest="50" HeightRequest="60" BackgroundColor="White">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                    <Entry x:Name="Otp6"
+                           MaxLength="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           FontSize="22" FontAttributes="Bold"
+                           TextColor="#111827"
+                           BackgroundColor="Transparent"
+                           Keyboard="Numeric"
+                           Placeholder="0"
+                           TextChanged="OnOtp6Changed"
+                           Completed="OnContinueTapped"/>
+                </Border>
+
+            </HorizontalStackLayout>
+
+            <!-- Continue button -->
+            <Border BackgroundColor="#7C3AED"
+                    Padding="0"
+                    x:Name="ContinueBtn"
+                    HeightRequest="52"
+                    Margin="0,0,0,20">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12"/>
+                </Border.StrokeShape>
+                <Border.Stroke>Transparent</Border.Stroke>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnContinueTapped"/>
+                </Border.GestureRecognizers>
+                <Grid>
+                    <Label x:Name="ContinueLbl"
+                           Text="ยืนยันรหัส OTP"
+                           TextColor="White"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                    <ActivityIndicator x:Name="LoadingIndicator"
+                                       IsRunning="False"
+                                       IsVisible="False"
+                                       Color="White"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Resend link -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                <Label Text="หากคุณไม่ได้รับรหัส!"
+                       FontSize="13"
+                       TextColor="#6B7280"
+                       VerticalOptions="Center"/>
+                <Label x:Name="ResendLabel"
+                       Text="ส่งรหัสใหม่"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       TextColor="#7C3AED"
+                       VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnResendTapped"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

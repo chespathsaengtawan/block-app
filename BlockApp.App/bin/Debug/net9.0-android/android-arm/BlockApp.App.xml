@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BlockApp.App</name>
+    </assembly>
+    <members>
+        <member name="M:BlockApp.App.Services.BlocklistCacheService.Normalize(System.String)">
+            <summary>
+            Normalize phone number to Thai local format (0xxxxxxxxx) for comparison.
+            Strips spaces/dashes, converts +66 international to local format.
+            </summary>
+        </member>
+        <member name="T:BlockApp.App.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+    </members>
+</doc>

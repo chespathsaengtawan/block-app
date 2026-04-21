@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "BlockApp.Api\\BlockApp.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "BlockApp.App\\BlockApp.App.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

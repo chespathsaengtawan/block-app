@@ -1,0 +1,6 @@
+@BlockApp.Api_HostAddress = http://localhost:5073
+
+GET {{BlockApp.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

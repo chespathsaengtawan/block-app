@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BlockApp.App.Pages.LoginPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="32,60,32,32"
+            Spacing="0"
+            VerticalOptions="Center">
+
+            <!-- Chat Bubble Icon -->
+            <Grid WidthRequest="90" HeightRequest="78"
+                  HorizontalOptions="Center" Margin="0,0,0,32">
+
+                <!-- Back bubble (pink) -->
+                <Border BackgroundColor="#DB2777"
+                        WidthRequest="58" HeightRequest="48"
+                        HorizontalOptions="End" VerticalOptions="Start"
+                        Margin="0,0,0,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14,14,14,2"/>
+                    </Border.StrokeShape>
+                    <Border.Stroke>Transparent</Border.Stroke>
+                    <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Front bubble (purple) -->
+                <Border BackgroundColor="#7C3AED"
+                        WidthRequest="58" HeightRequest="48"
+                        HorizontalOptions="Start" VerticalOptions="End">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14,14,2,14"/>
+                    </Border.StrokeShape>
+                    <Border.Stroke>Transparent</Border.Stroke>
+                    <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                    </HorizontalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Title -->
+            <Label Text="หมายเลขโทรศัพท์มือถือของคุณ คืออะไร?"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="#111827"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap"
+                   Margin="0,0,0,28"/>
+
+            <!-- Input label -->
+            <Label Text="หมายเลขโทรศัพท์มือถือ"
+                   FontSize="13"
+                   TextColor="#6B7280"
+                   Margin="0,0,0,6"/>
+
+            <!-- Phone number input row -->
+            <Border Stroke="#E5E7EB"
+                    StrokeThickness="1.5"
+                    BackgroundColor="White"
+                    Padding="0"
+                    Margin="0,0,0,12">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="Auto,1,*" HeightRequest="52">
+
+                    <!-- Country code picker -->
+                    <Picker x:Name="CountryCodePicker"
+                            Grid.Column="0"
+                            WidthRequest="120"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            FontSize="15"
+                            TextColor="#111827"
+                            BackgroundColor="Transparent"
+                            SelectedIndexChanged="OnCountryCodeChanged"/>
+
+                    <!-- Divider -->
+                    <BoxView Grid.Column="1"
+                             WidthRequest="1"
+                             BackgroundColor="#E5E7EB"
+                             VerticalOptions="Fill"
+                             Margin="0,8"/>
+
+                    <!-- Phone number entry -->
+                    <Entry x:Name="PhoneEntry"
+                           Grid.Column="2"
+                           Placeholder="0123 456 7890"
+                           PlaceholderColor="#9CA3AF"
+                           TextColor="#111827"
+                           FontSize="15"
+                           BackgroundColor="Transparent"
+                           Keyboard="Telephone"
+                           VerticalOptions="Center"
+                           Margin="12,0,12,0"
+                           ReturnType="Done"
+                           Completed="OnContinueTapped"/>
+                </Grid>
+            </Border>
+
+            <!-- Subtitle -->
+            <Label Text="เราจะส่งรหัสยืนยันทางข้อความไปยังหมายเลขโทรศัพท์ของคุณ"
+                   FontSize="13"
+                   TextColor="#6B7280"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,36"/>
+
+            <!-- Continue button -->
+            <Border BackgroundColor="#7C3AED"
+                    Padding="0"
+                    x:Name="ContinueBtn"
+                    HeightRequest="52">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12"/>
+                </Border.StrokeShape>
+                <Border.Stroke>Transparent</Border.Stroke>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnContinueTapped"/>
+                </Border.GestureRecognizers>
+                <Grid>
+                    <Label 
+                        x:Name="ContinueLbl"
+                        Text="ต่อไป"
+                        TextColor="White"
+                        FontSize="15"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"/>
+                    <ActivityIndicator 
+                        x:Name="LoadingIndicator"
+                        IsRunning="False"
+                        IsVisible="False"
+                        Color="White"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

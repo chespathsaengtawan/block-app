@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BlockApp.App.Pages.ConfirmPinPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="32,60,32,32" Spacing="0" VerticalOptions="Center">
+
+                <!-- Icon -->
+                <Grid WidthRequest="90" HeightRequest="78"
+                      HorizontalOptions="Center" Margin="0,0,0,32">
+                    <Border BackgroundColor="#DB2777"
+                            WidthRequest="58" HeightRequest="48"
+                            HorizontalOptions="End" VerticalOptions="Start">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="14,14,14,2"/></Border.StrokeShape>
+                        <Border.Stroke>Transparent</Border.Stroke>
+                        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                            <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                            <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                            <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        </HorizontalStackLayout>
+                    </Border>
+                    <Border BackgroundColor="#7C3AED"
+                            WidthRequest="58" HeightRequest="48"
+                            HorizontalOptions="Start" VerticalOptions="End">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="14,14,2,14"/></Border.StrokeShape>
+                        <Border.Stroke>Transparent</Border.Stroke>
+                        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                            <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                            <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                            <BoxView WidthRequest="7" HeightRequest="7" Color="White" CornerRadius="3.5"/>
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!-- Title -->
+                <Label Text="Confirm PIN"
+                       FontSize="24" FontAttributes="Bold"
+                       TextColor="#111827"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,0,0,8"/>
+
+                <Label Text="Enter your PIN again to confirm"
+                       FontSize="14" TextColor="#6B7280"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,0,0,40"/>
+
+                <!-- Status message (error / hidden) -->
+                <Label x:Name="StatusLabel"
+                       FontSize="14" FontAttributes="Bold"
+                       TextColor="#EF4444"
+                       HorizontalTextAlignment="Center"
+                       IsVisible="False"
+                       Margin="0,0,0,12"/>
+
+                <!-- PIN dots display -->
+                <HorizontalStackLayout x:Name="PinDotsRow"
+                                       HorizontalOptions="Center" Spacing="16" Margin="0,0,0,48">
+                    <Border x:Name="Dot1" WidthRequest="18" HeightRequest="18"
+                            BackgroundColor="#E5E7EB" StrokeThickness="0">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                    <Border x:Name="Dot2" WidthRequest="18" HeightRequest="18"
+                            BackgroundColor="#E5E7EB" StrokeThickness="0">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                    <Border x:Name="Dot3" WidthRequest="18" HeightRequest="18"
+                            BackgroundColor="#E5E7EB" StrokeThickness="0">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                    <Border x:Name="Dot4" WidthRequest="18" HeightRequest="18"
+                            BackgroundColor="#E5E7EB" StrokeThickness="0">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                    <Border x:Name="Dot5" WidthRequest="18" HeightRequest="18"
+                            BackgroundColor="#E5E7EB" StrokeThickness="0">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                    <Border x:Name="Dot6" WidthRequest="18" HeightRequest="18"
+                            BackgroundColor="#E5E7EB" StrokeThickness="0">
+                        <Border.StrokeShape><Ellipse/></Border.StrokeShape>
+                    </Border>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Numpad -->
+        <Grid Grid.Row="1" Padding="24,0,24,32" RowSpacing="8" ColumnSpacing="8"
+              RowDefinitions="Auto,Auto,Auto,Auto"
+              ColumnDefinitions="*,*,*">
+
+            <!-- Row 1: 1 2 3 -->
+            <Border Grid.Row="0" Grid.Column="0" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="1"/></Border.GestureRecognizers>
+                <Label Text="1" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+            <Border Grid.Row="0" Grid.Column="1" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="2"/></Border.GestureRecognizers>
+                <Label Text="2" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+            <Border Grid.Row="0" Grid.Column="2" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="3"/></Border.GestureRecognizers>
+                <Label Text="3" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+
+            <!-- Row 2: 4 5 6 -->
+            <Border Grid.Row="1" Grid.Column="0" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="4"/></Border.GestureRecognizers>
+                <Label Text="4" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+            <Border Grid.Row="1" Grid.Column="1" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="5"/></Border.GestureRecognizers>
+                <Label Text="5" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+            <Border Grid.Row="1" Grid.Column="2" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="6"/></Border.GestureRecognizers>
+                <Label Text="6" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+
+            <!-- Row 3: 7 8 9 -->
+            <Border Grid.Row="2" Grid.Column="0" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="7"/></Border.GestureRecognizers>
+                <Label Text="7" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+            <Border Grid.Row="2" Grid.Column="1" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="8"/></Border.GestureRecognizers>
+                <Label Text="8" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+            <Border Grid.Row="2" Grid.Column="2" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="9"/></Border.GestureRecognizers>
+                <Label Text="9" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+
+            <!-- Row 4: (empty) 0 backspace -->
+            <BoxView Grid.Row="3" Grid.Column="0" BackgroundColor="Transparent"/>
+            <Border Grid.Row="3" Grid.Column="1" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnDigitTapped" CommandParameter="0"/></Border.GestureRecognizers>
+                <Label Text="0" FontSize="22" FontAttributes="Bold" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+            <Border Grid.Row="3" Grid.Column="2" HeightRequest="68" BackgroundColor="#F9FAFB" StrokeThickness="0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnBackspaceTapped"/></Border.GestureRecognizers>
+                <Label Text="⌫" FontSize="22" TextColor="#6B7280" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>
