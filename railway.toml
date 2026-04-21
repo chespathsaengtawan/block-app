@@ -1,5 +1,5 @@
 [build]
-dockerfilePath = "BlockApp.Api/Dockerfile"
+dockerfilePath = "Dockerfile"
 
 [deploy]
 healthcheckPath = "/health"

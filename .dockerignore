@@ -1,0 +1,21 @@
+# Ignore MAUI app (not needed for API build)
+BlockApp.App/
+
+# Ignore build outputs
+**/bin/
+**/obj/
+
+# Ignore local dev files
+**/*.db
+**/*.db-wal
+**/*.db-shm
+BlockApp.Api/app/data/
+
+# Ignore IDE and user files
+**/.vs/
+**/.vscode/
+**/*.user
+
+# Ignore git
+.git/
+.gitignore
