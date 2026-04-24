@@ -15,9 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
 
-builder.Configuration
-    .AddJsonFile("appsettings.json", optional: true)
-    .AddEnvironmentVariables();
+// WebApplication.CreateBuilder โหลด appsettings.json, appsettings.{env}.json,
+// User Secrets (Dev), Environment Variables และ Command Line Args ให้อัตโนมัติ
 
 #endregion
 
@@ -41,6 +40,7 @@ builder.Services.AddOpenApi(options =>
         document.Info.Version = "v1.0.0";
 
         // JWT Bearer security scheme — required for Scalar auth
+        document.Components ??= new Microsoft.OpenApi.Models.OpenApiComponents();
         document.Components.SecuritySchemes["Bearer"] = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
         {
             Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
@@ -160,6 +160,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<RateLimitService>();
 builder.Services.AddScoped<IOtpService, OtpService>();
+builder.Services.AddScoped<IBlocklistService, BlocklistService>();
 
 // ===== Points & Payment Services =====
 builder.Services.AddScoped<IOmiseService, OmiseService>();
@@ -211,6 +212,7 @@ if (app.Environment.IsDevelopment())
         {
             PreferredSecuritySchemes = ["Bearer"]
         };
+        
     });
 }
 // ✅ Global Exception Middleware (ต้องอยู่บนสุด)

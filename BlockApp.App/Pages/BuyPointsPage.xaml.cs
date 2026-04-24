@@ -21,7 +21,7 @@ public partial class BuyPointsPage : ContentPage
         {
             // Load balance
             var balance = await _pointsPaymentService.GetBalanceAsync();
-            BalanceLabel.Text = $"¤§àËÅ×Í: {balance:N0} áµéÁ";
+            BalanceLabel.Text = $"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {balance:N0} ï¿½ï¿½ï¿½";
 
             // Load packages
             var packages = await _pointsPaymentService.GetPackagesAsync();
@@ -29,7 +29,7 @@ public partial class BuyPointsPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("¼Ô´¾ÅÒ´", $"äÁèÊÒÁÒÃ¶âËÅ´¢éÍÁÙÅä´é: {ex.Message}", "µ¡Å§");
+            await DisplayAlert("ï¿½Ô´ï¿½ï¿½Ò´", $"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {ex.Message}", "ï¿½ï¿½Å§");
         }
     }
 
@@ -39,10 +39,10 @@ public partial class BuyPointsPage : ContentPage
             return;
 
         var confirm = await DisplayAlert(
-            "Â×¹ÂÑ¹¡ÒÃ«×éÍ",
-            $"«×éÍáµéÁ {package.Points:N0} áµéÁ{(package.BonusPoints > 0 ? $" + âº¹ÑÊ {package.BonusPoints} áµéÁ" : "")} \nÃÒ¤Ò {package.PriceTHB:N0} ºÒ·",
-            "Â×¹ÂÑ¹",
-            "Â¡àÅÔ¡");
+            "ï¿½×¹ï¿½Ñ¹ï¿½ï¿½Ã«ï¿½ï¿½ï¿½",
+            $"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {package.Points:N0} ï¿½ï¿½ï¿½{(package.BonusPoints > 0 ? $" + âº¹ï¿½ï¿½ {package.BonusPoints} ï¿½ï¿½ï¿½" : "")} \nï¿½Ò¤ï¿½ {package.PriceTHB:N0} ï¿½Ò·",
+            "ï¿½×¹ï¿½Ñ¹",
+            "Â¡ï¿½ï¿½Ô¡");
 
         if (!confirm)
             return;
@@ -57,7 +57,7 @@ public partial class BuyPointsPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("¼Ô´¾ÅÒ´", $"äÁèÊÒÁÒÃ¶ÊÃéÒ§¡ÒÃªÓÃÐà§Ô¹ä´é: {ex.Message}", "µ¡Å§");
+            await DisplayAlert("ï¿½Ô´ï¿½ï¿½Ò´", $"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½Ò§ï¿½ï¿½Ãªï¿½ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½: {ex.Message}", "ï¿½ï¿½Å§");
         }
     }
 
@@ -67,18 +67,4 @@ public partial class BuyPointsPage : ContentPage
     }
 }
 
-// Converter for bonus points visibility
-public class IsNotZeroConverter : IValueConverter
-{
-    public object Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-    {
-        if (value is int intValue)
-            return intValue > 0;
-        return false;
-    }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
-}

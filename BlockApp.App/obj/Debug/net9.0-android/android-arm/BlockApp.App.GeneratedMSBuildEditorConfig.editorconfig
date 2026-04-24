@@ -44,6 +44,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = BlockApp.App.Pages.AddBloc
 build_metadata.AdditionalFiles.TargetPath = Pages\AddBlockPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Pages\AddBlockPage.xaml
 
+[D:/MAUI/block-app/BlockApp.App/Pages/BuyPointsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = BlockApp.App.Pages.BuyPointsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\BuyPointsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\BuyPointsPage.xaml
+
 [D:/MAUI/block-app/BlockApp.App/Pages/ConfirmPinPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = BlockApp.App.Pages.ConfirmPinPage.xaml
@@ -73,6 +79,12 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = BlockApp.App.Pages.OtpPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Pages\OtpPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Pages\OtpPage.xaml
+
+[D:/MAUI/block-app/BlockApp.App/Pages/QrPaymentPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = BlockApp.App.Pages.QrPaymentPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\QrPaymentPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\QrPaymentPage.xaml
 
 [D:/MAUI/block-app/BlockApp.App/Pages/SplashPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml

@@ -17,7 +17,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlockApp.App")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+be8ad8bc1411a86505e1678701806fcae2be016d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+c1909f0585d28b82d2e32e343dc4c78c35982bfe")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlockApp.App")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlockApp.App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

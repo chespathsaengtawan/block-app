@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dto="clr-namespace:BlockApp.Shared.DTOs.Blocklist;assembly=BlockApp.Shared"
              x:Class="BlockApp.App.Views.HomeView">
     <Grid RowDefinitions="Auto,*" BackgroundColor="#F9FAFB">
-        
+
         <!-- Header -->
         <Border Grid.Row="0" BackgroundColor="White" Padding="20,30,20,16" StrokeThickness="0">
             <Border.Shadow>
@@ -12,7 +13,7 @@
             <Grid ColumnDefinitions="*,Auto">
                 <VerticalStackLayout Spacing="2" VerticalOptions="Center">
                     <Label Text="เบอร์ที่บล็อก" FontSize="22" FontAttributes="Bold" TextColor="#111827"/>
-                    <Label Text="รายการเบอร์โทรที่คุณบล็อกไว้" FontSize="13" TextColor="#6B7280"/>
+                    <Label x:Name="SubtitleLabel" Text="รายการเบอร์โทรที่คุณบล็อกไว้" FontSize="13" TextColor="#6B7280"/>
                 </VerticalStackLayout>
                 <Border Grid.Column="1" BackgroundColor="#F3F0FF" WidthRequest="42" HeightRequest="42"
                         HorizontalOptions="End" VerticalOptions="Center" StrokeThickness="0">
@@ -22,21 +23,142 @@
             </Grid>
         </Border>
 
-        <!-- Content -->
-        <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="20,16" Spacing="12">
-                <!-- Empty state -->
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="14" Margin="0,60,0,0">
-                    <Label Text="&#x1F6AB;" FontSize="60" HorizontalOptions="Center"/>
-                    <Label Text="ยังไม่มีเบอร์ที่บล็อก"
-                           FontSize="17" FontAttributes="Bold"
-                           TextColor="#374151" HorizontalOptions="Center"/>
-                    <Label Text="แตะปุ่ม + เพื่อเพิ่มเบอร์ที่ต้องการบล็อก"
-                           FontSize="13" TextColor="#9CA3AF"
-                           HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
-                </VerticalStackLayout>
-            </VerticalStackLayout>
-        </ScrollView>
+        <!-- Content area -->
+        <Grid Grid.Row="1">
 
+            <!-- Loading -->
+            <ActivityIndicator x:Name="LoadingIndicator"
+                               IsRunning="True" IsVisible="True"
+                               Color="#7C3AED"
+                               VerticalOptions="Center" HorizontalOptions="Center"/>
+
+            <!-- Empty state -->
+            <VerticalStackLayout x:Name="EmptyState" IsVisible="False"
+                                 HorizontalOptions="Center" Spacing="14" Margin="0,60,0,0">
+                <Label Text="&#x1F6AB;" FontSize="60" HorizontalOptions="Center"/>
+                <Label Text="ยังไม่มีเบอร์ที่บล็อก"
+                       FontSize="17" FontAttributes="Bold"
+                       TextColor="#374151" HorizontalOptions="Center"/>
+                <Label Text="แตะปุ่ม + เพื่อเพิ่มเบอร์ที่ต้องการบล็อก"
+                       FontSize="13" TextColor="#9CA3AF"
+                       HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
+
+            <!-- Blocklist -->
+            <CollectionView x:Name="BlocklistCollection" IsVisible="False" Margin="16,12,16,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:BlockEntryDto">
+                        <Border Margin="0,0,0,10" Padding="16,14" BackgroundColor="White"
+                                StrokeThickness="0">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="14"/></Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.05"/>
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <!-- Icon -->
+                                <Border Grid.Column="0" BackgroundColor="#FEE2E2" WidthRequest="42" HeightRequest="42"
+                                        StrokeThickness="0" VerticalOptions="Center" Margin="0,0,14,0">
+                                    <Border.StrokeShape><RoundRectangle CornerRadius="21"/></Border.StrokeShape>
+                                    <Label Text="{Binding EntryType, Converter={StaticResource BlockEntryTypeIconConverter}}"
+                                           FontSize="18"
+                                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+                                <!-- Info -->
+                                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                    <Label Text="{Binding PhoneNumber}"
+                                           IsVisible="{Binding PhoneNumber, Converter={StaticResource NullToBoolConverter}}"
+                                           FontSize="15" FontAttributes="Bold" TextColor="#111827"/>
+                                    <HorizontalStackLayout
+                                        IsVisible="{Binding AccountNumber, Converter={StaticResource NullToBoolConverter}}"
+                                        Spacing="6">
+                                        <Label Text="{Binding AccountNumber}"
+                                               FontSize="15" FontAttributes="Bold" TextColor="#111827"
+                                               VerticalOptions="Center"/>
+                                        <Label Text="{Binding BankName}"
+                                               IsVisible="{Binding BankName, Converter={StaticResource NullToBoolConverter}}"
+                                               FontSize="13" TextColor="#6B7280"
+                                               VerticalOptions="Center"/>
+                                    </HorizontalStackLayout>
+                                    <!-- Badges: each Reason flag · OtherReason -->
+                                    <FlexLayout Wrap="Wrap" Direction="Row" Margin="0,2,0,0">
+                                        <!-- SpamCall -->
+                                        <Border IsVisible="{Binding Reasons, Converter={StaticResource BlockReasonFlagConverter}, ConverterParameter=SpamCall}"
+                                                BackgroundColor="#FEF2F2" Padding="6,3" Margin="0,2,4,2" StrokeThickness="0">
+                                            <Border.StrokeShape><RoundRectangle CornerRadius="6"/></Border.StrokeShape>
+                                            <Label Text="📵 โทรก่อกวน" FontSize="11" TextColor="#991B1B"/>
+                                        </Border>
+                                        <!-- Scam -->
+                                        <Border IsVisible="{Binding Reasons, Converter={StaticResource BlockReasonFlagConverter}, ConverterParameter=Scam}"
+                                                BackgroundColor="#FEF2F2" Padding="6,3" Margin="0,2,4,2" StrokeThickness="0">
+                                            <Border.StrokeShape><RoundRectangle CornerRadius="6"/></Border.StrokeShape>
+                                            <Label Text="💸 หลอกโอนเงิน" FontSize="11" TextColor="#991B1B"/>
+                                        </Border>
+                                        <!-- MuleAccount -->
+                                        <Border IsVisible="{Binding Reasons, Converter={StaticResource BlockReasonFlagConverter}, ConverterParameter=MuleAccount}"
+                                                BackgroundColor="#FEF2F2" Padding="6,3" Margin="0,2,4,2" StrokeThickness="0">
+                                            <Border.StrokeShape><RoundRectangle CornerRadius="6"/></Border.StrokeShape>
+                                            <Label Text="🏦 บัญชีม้า" FontSize="11" TextColor="#991B1B"/>
+                                        </Border>
+                                        <!-- Other -->
+                                        <Border IsVisible="{Binding Reasons, Converter={StaticResource BlockReasonFlagConverter}, ConverterParameter=Other}"
+                                                BackgroundColor="#FEF2F2" Padding="6,3" Margin="0,2,4,2" StrokeThickness="0">
+                                            <Border.StrokeShape><RoundRectangle CornerRadius="6"/></Border.StrokeShape>
+                                            <Label Text="📝 อื่นๆ" FontSize="11" TextColor="#991B1B"/>
+                                        </Border>
+                                        <!-- OtherReason badge -->
+                                        <Border IsVisible="{Binding OtherReason, Converter={StaticResource NullToBoolConverter}}"
+                                                BackgroundColor="#FEF2F2" Padding="6,3" Margin="0,2,4,2"
+                                                StrokeThickness="0">
+                                            <Border.StrokeShape><RoundRectangle CornerRadius="6"/></Border.StrokeShape>
+                                            <Label Text="{Binding OtherReason}" FontSize="11" TextColor="#991B1B"
+                                                   LineBreakMode="TailTruncation" MaxLines="1"/>
+                                        </Border>
+                                    </FlexLayout>
+                                    <Label FontSize="11" TextColor="#9CA3AF">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="บล็อกเมื่อ "/>
+                                                <Span Text="{Binding CreatedAt, StringFormat='{0:dd/MM/yyyy}'}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+                                <!-- Right column: badge + delete -->
+                                <HorizontalStackLayout Grid.Column="2" Spacing="8" VerticalOptions="Center">
+                                    <!-- BlockedByCount badge -->
+                                    <Border BackgroundColor="#EDE9FE" Padding="8" HeightRequest="28"
+                                            StrokeThickness="0" HorizontalOptions="End">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                                        <Label FontSize="11" TextColor="#7C3AED" FontAttributes="Bold">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="บล็อกแล้ว "/>
+                                                    <Span Text="{Binding BlockedByCount}"/>
+                                                    <Span Text=" คน"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </Border>
+                                    <!-- Delete button -->
+                                    <Border BackgroundColor="#FEF2F2" WidthRequest="34" HeightRequest="34"
+                                            StrokeThickness="0" HorizontalOptions="End">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="17"/></Border.StrokeShape>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                CommandParameter="{Binding .}"
+                                                Tapped="OnDeleteTapped"/>
+                                        </Border.GestureRecognizers>
+                                        <Label Text="🗑️" FontSize="14"
+                                               HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    </Border>
+                                </HorizontalStackLayout>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
     </Grid>
 </ContentView>

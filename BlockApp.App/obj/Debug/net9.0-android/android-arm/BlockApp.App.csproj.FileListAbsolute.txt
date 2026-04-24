@@ -945,3 +945,4 @@ D:\MAUI\block-app\BlockApp.App\obj\Debug\net9.0-android\android-arm\stamp\_Conve
 D:\MAUI\block-app\BlockApp.App\obj\Debug\net9.0-android\android-arm\stamp\_GenerateJavaStubs.stamp
 D:\MAUI\block-app\BlockApp.App\obj\Debug\net9.0-android\android-arm\stamp\_GeneratePackageManagerJava.stamp
 D:\MAUI\block-app\BlockApp.App\obj\Debug\net9.0-android\android-arm\stamp\_ResolveLibraryProjectImports.stamp
+D:\MAUI\block-app\BlockApp.App\obj\Debug\net9.0-android\android-arm\BlockApp.App.sourcelink.json

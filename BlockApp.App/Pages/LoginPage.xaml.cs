@@ -43,7 +43,7 @@ public partial class LoginPage : ContentPage
 
         SetLoading(true);
 
-        var otpResult = await _apiService.RequestOtpAsync(fullPhoneNumber);
+        var (otpResult, error) = await _apiService.RequestOtpAsync(fullPhoneNumber);
 
         SetLoading(false);
 
@@ -53,7 +53,7 @@ public partial class LoginPage : ContentPage
         }
         else
         {
-            await DisplayAlert("เกิดข้อผิดพลาด", "ไม่สามารถส่ง OTP ได้ กรุณาลองใหม่อีกครั้ง", "ตกลง");
+            await DisplayAlert("เกิดข้อผิดพลาด", error ?? "ไม่สามารถส่ง OTP ได้ กรุณาลองใหม่อีกครั้ง", "ตกลง");
         }
     }
 

@@ -16,10 +16,10 @@ public class ApiService
         Converters = { new JsonStringEnumConverter() }
     };
 
-    // Android emulator uses 10.0.2.2 to reach host machine localhost
-    // For Windows/iOS development use localhost directly
+    // Physical device: ใช้ IP จริงของ PC (ต้องอยู่ Wi-Fi เดียวกัน)
+    // Emulator: 10.0.2.2 → host machine localhost
 #if ANDROID
-    private const string BaseUrl = "http://10.0.2.2:5073";
+    private const string BaseUrl = "http://10.156.89.22:5073";
 #else
     private const string BaseUrl = "http://localhost:5073";
 #endif
@@ -45,7 +45,7 @@ public class ApiService
         _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
     }
 
-    public async Task<RequestOtpResultDto?> RequestOtpAsync(string phoneNumber)
+    public async Task<(RequestOtpResultDto? Result, string? Error)> RequestOtpAsync(string phoneNumber)
     {
         try
         {
@@ -54,16 +54,28 @@ public class ApiService
                 new RequestOtpDto { PhoneNumber = phoneNumber, FromService = SmsProvider.ThaibulkSMS });
 
             if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<RequestOtpResultDto>(_jsonOptions);
+            {
+                var result = await response.Content.ReadFromJsonAsync<RequestOtpResultDto>(_jsonOptions);
+                return (result, null);
+            }
 
             var errorBody = await response.Content.ReadAsStringAsync();
             System.Diagnostics.Debug.WriteLine($"[ApiService] RequestOtp failed: {(int)response.StatusCode} {errorBody}");
-            return null;
+            return (null, $"[{(int)response.StatusCode}] {errorBody}");
+        }
+        catch (HttpRequestException ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[ApiService] RequestOtp network error: {ex.Message}");
+            return (null, $"เชื่อมต่อ {BaseUrl} ไม่ได้: {ex.Message}");
+        }
+        catch (TaskCanceledException)
+        {
+            return (null, "Request timeout — API ไม่ตอบสนองใน 30 วินาที");
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[ApiService] RequestOtp exception: {ex.GetType().Name}: {ex.Message}");
-            return null;
+            return (null, $"{ex.GetType().Name}: {ex.Message}");
         }
     }
 
@@ -97,11 +109,11 @@ public class ApiService
         }
     }
 
-    public async Task<List<BlockNumberDto>> GetBlocklistAsync()
+    public async Task<List<BlockEntryDto>> GetBlocklistAsync()
     {
         try
         {
-            var list = await _httpClient.GetFromJsonAsync<List<BlockNumberDto>>("/api/blocklist") ?? [];
+            var list = await _httpClient.GetFromJsonAsync<List<BlockEntryDto>>("/blockapp/blocklist", _jsonOptions) ?? [];
             _blocklistCache.SaveBlocklist(list);
             return list;
         }
@@ -115,32 +127,31 @@ public class ApiService
     {
         try
         {
-            var list = await _httpClient.GetFromJsonAsync<List<BlockNumberDto>>("/api/blocklist") ?? [];
+            var list = await _httpClient.GetFromJsonAsync<List<BlockEntryDto>>("/blockapp/blocklist", _jsonOptions) ?? [];
             _blocklistCache.SaveBlocklist(list);
         }
         catch { }
     }
 
-    public async Task<bool> AddBlockNumberAsync(string phoneNumber, string? note = null)
+    public async Task<AddBlockEntryResultDto?> AddBlockEntryAsync(CreateBlockEntryDto dto)
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync(
-                "/blockapp/blocklist",
-                new BlockNumberCreateDto { PhoneNumber = phoneNumber, Note = note });
-            return response.IsSuccessStatusCode;
+            var response = await _httpClient.PostAsJsonAsync("/blockapp/blocklist", dto, _jsonOptions);
+            if (!response.IsSuccessStatusCode) return null;
+            return await response.Content.ReadFromJsonAsync<AddBlockEntryResultDto>(_jsonOptions);
         }
         catch
         {
-            return false;
+            return null;
         }
     }
 
-    public async Task<bool> DeleteBlockNumberAsync(int id)
+    public async Task<bool> DeleteBlockEntryAsync(int userBlockEntryId)
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"/blockapp/blocklist/{id}");
+            var response = await _httpClient.DeleteAsync($"/blockapp/blocklist/{userBlockEntryId}");
             return response.IsSuccessStatusCode;
         }
         catch

@@ -15,8 +15,8 @@
             <Grid ColumnDefinitions="*,auto">
 
                 <VerticalStackLayout Grid.Column="0" Spacing="2" Margin="14,0,24,0" VerticalOptions="Center">
-                    <Label Text="เพิ่มเบอร์บล็อก" FontSize="20" FontAttributes="Bold" TextColor="#111827"/>
-                    <Label Text="กรอกเบอร์โทรที่ต้องการบล็อก" FontSize="13" TextColor="#6B7280"/>
+                    <Label Text="เพิ่มรายการบล็อก" FontSize="20" FontAttributes="Bold" TextColor="#111827"/>
+                    <Label Text="เบอร์โทร หรือ เลขบัญชีธนาคาร" FontSize="13" TextColor="#6B7280"/>
                 </VerticalStackLayout>
                 
                 <Border 
@@ -42,14 +42,39 @@
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="24,24" Spacing="20">
 
-                <!-- Phone Number -->
+                <!-- Entry Type Toggle -->
                 <VerticalStackLayout Spacing="8">
+                    <Label Text="ประเภท" FontSize="14" FontAttributes="Bold" TextColor="#374151"/>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <Border x:Name="PhoneTypeBtn" Grid.Column="0"
+                                BackgroundColor="#7C3AED" Padding="0" StrokeThickness="0" HeightRequest="44">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnTypePhoneTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label x:Name="PhoneTypeLbl" Text="📞 เบอร์โทรศัพท์" FontSize="14" FontAttributes="Bold" TextColor="White"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Border x:Name="BankTypeBtn" Grid.Column="1"
+                                BackgroundColor="#F3F4F6" Padding="0" StrokeThickness="1" Stroke="#E5E7EB" HeightRequest="44">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnTypeBankTapped"/>
+                            </Border.GestureRecognizers>
+                            <Label x:Name="BankTypeLbl" Text="🏦 เลขบัญชีธนาคาร" FontSize="14" FontAttributes="Bold" TextColor="#6B7280"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+
+                <!-- Phone Section -->
+                <VerticalStackLayout x:Name="PhoneSection" Spacing="8">
                     <Label Text="เบอร์โทรศัพท์" FontSize="14" FontAttributes="Bold" TextColor="#374151"/>
                     <Border Stroke="#E5E7EB" StrokeThickness="1.5" BackgroundColor="#F9FAFB"
                             Padding="16,0" HeightRequest="52">
                         <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
                         <Entry x:Name="PhoneEntry"
-                               Placeholder="+66 8X-XXXX-XXXX"
+                               Placeholder="0xxxxxxxxx หรือ +66xxxxxxxxx"
                                PlaceholderColor="#9CA3AF"
                                TextColor="#111827"
                                FontSize="16"
@@ -59,13 +84,129 @@
                     </Border>
                 </VerticalStackLayout>
 
+                <!-- Bank Account Section -->
+                <VerticalStackLayout x:Name="BankSection" IsVisible="False" Spacing="16">
+                    <!-- Bank Name -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="ชื่อธนาคาร" FontSize="14" FontAttributes="Bold" TextColor="#374151"/>
+                        <Border Stroke="#E5E7EB" StrokeThickness="1.5" BackgroundColor="#F9FAFB"
+                                Padding="16,0" HeightRequest="52">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                            <Entry x:Name="BankNameEntry"
+                                   Placeholder="เช่น กสิกรไทย, กรุงไทย, SCB"
+                                   PlaceholderColor="#9CA3AF"
+                                   TextColor="#111827"
+                                   FontSize="15"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+                    <!-- Account Number -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="เลขที่บัญชี" FontSize="14" FontAttributes="Bold" TextColor="#374151"/>
+                        <Border Stroke="#E5E7EB" StrokeThickness="1.5" BackgroundColor="#F9FAFB"
+                                Padding="16,0" HeightRequest="52">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                            <Entry x:Name="AccountNumberEntry"
+                                   Placeholder="xxx-x-xxxxx-x"
+                                   PlaceholderColor="#9CA3AF"
+                                   TextColor="#111827"
+                                   FontSize="16"
+                                   BackgroundColor="Transparent"
+                                   Keyboard="Numeric"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+                    <!-- Account Holder Name (optional) -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="ชื่อเจ้าของบัญชี (ไม่บังคับ)" FontSize="14" FontAttributes="Bold" TextColor="#374151"/>
+                        <Border Stroke="#E5E7EB" StrokeThickness="1.5" BackgroundColor="#F9FAFB"
+                                Padding="16,0" HeightRequest="52">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
+                            <Entry x:Name="AccountHolderEntry"
+                                   Placeholder="ชื่อ-นามสกุล"
+                                   PlaceholderColor="#9CA3AF"
+                                   TextColor="#111827"
+                                   FontSize="15"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Reasons -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="เหตุผล (เลือกได้มากกว่า 1)" FontSize="14" FontAttributes="Bold" TextColor="#374151"/>
+
+                    <!-- SpamCall -->
+                    <Border BackgroundColor="#FFF7ED" Stroke="#FED7AA" StrokeThickness="1" Padding="14,12">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*">
+                            <CheckBox x:Name="ReasonSpamCheck" Color="#EA580C" VerticalOptions="Center"/>
+                            <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                <Label Text="📢 โทรก่อกวน" FontSize="14" FontAttributes="Bold" TextColor="#9A3412"/>
+                                <Label Text="สายโฆษณา สายรบกวน โรบอทคอล" FontSize="12" TextColor="#C2410C"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!-- Scam -->
+                    <Border BackgroundColor="#FEF2F2" Stroke="#FECACA" StrokeThickness="1" Padding="14,12">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*">
+                            <CheckBox x:Name="ReasonScamCheck" Color="#DC2626" VerticalOptions="Center"/>
+                            <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                <Label Text="💸 หลอกโอนเงิน" FontSize="14" FontAttributes="Bold" TextColor="#991B1B"/>
+                                <Label Text="แก๊งคอลเซ็นเตอร์ มิจฉาชีพ" FontSize="12" TextColor="#B91C1C"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!-- MuleAccount -->
+                    <Border BackgroundColor="#FFF1F2" Stroke="#FECDD3" StrokeThickness="1" Padding="14,12">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*">
+                            <CheckBox x:Name="ReasonMuleCheck" Color="#E11D48" VerticalOptions="Center"/>
+                            <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                <Label Text="🐴 บัญชีม้า" FontSize="14" FontAttributes="Bold" TextColor="#9F1239"/>
+                                <Label Text="บัญชีรับโอนเงินผิดกฎหมาย" FontSize="12" TextColor="#BE123C"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!-- Other -->
+                    <Border BackgroundColor="#F5F3FF" Stroke="#DDD6FE" StrokeThickness="1" Padding="14,12">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <CheckBox x:Name="ReasonOtherCheck" Color="#7C3AED" VerticalOptions="Center"
+                                          CheckedChanged="OnOtherReasonCheckedChanged"/>
+                                <Label Grid.Column="1" Text="📝 อื่นๆ" FontSize="14" FontAttributes="Bold"
+                                       TextColor="#4C1D95" VerticalOptions="Center"/>
+                            </Grid>
+                            <Border x:Name="OtherReasonInputContainer" IsVisible="False"
+                                    Stroke="#C4B5FD" StrokeThickness="1.5" BackgroundColor="White"
+                                    Padding="12,0" HeightRequest="44">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="8"/></Border.StrokeShape>
+                                <Entry x:Name="OtherReasonEntry"
+                                       Placeholder="ระบุเหตุผล..."
+                                       PlaceholderColor="#A78BFA"
+                                       TextColor="#111827"
+                                       FontSize="14"
+                                       BackgroundColor="Transparent"
+                                       VerticalOptions="Center"/>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
                 <!-- Note -->
                 <VerticalStackLayout Spacing="8">
                     <Label Text="หมายเหตุ (ไม่บังคับ)" FontSize="14" FontAttributes="Bold" TextColor="#374151"/>
                     <Border Stroke="#E5E7EB" StrokeThickness="1.5" BackgroundColor="#F9FAFB" Padding="16,12">
                         <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
                         <Editor x:Name="NoteEditor"
-                                Placeholder="เช่น สายแอบอ้าง, โรบอทคอล..."
+                                Placeholder="หมายเหตุเพิ่มเติม..."
                                 PlaceholderColor="#9CA3AF"
                                 TextColor="#111827"
                                 FontSize="14"
@@ -81,10 +222,12 @@
                     <Grid ColumnDefinitions="Auto,*">
                         <Label Text="&#x2139;&#xFE0F;" FontSize="15" VerticalOptions="Start" Margin="0,2,8,0"/>
                         <Label Grid.Column="1" FontSize="13" TextColor="#166534" LineBreakMode="WordWrap"
-                               Text="เบอร์ที่บล็อกจะถูกบันทึกและแชร์กับระบบเพื่อป้องกันสายรบกวน"/>
+                               Text="ข้อมูลที่บล็อกจะถูกแชร์กับระบบเพื่อป้องกันสมาชิกคนอื่น หากมีผู้บล็อกเบอร์/บัญชีนี้แล้ว ระบบจะเพิ่มให้อัตโนมัติ"/>
                     </Grid>
                 </Border>
-                <Grid Padding="24,16">
+
+                <!-- Submit Button -->
+                <Grid Padding="0,4,0,16">
                     <Border BackgroundColor="#7C3AED" HeightRequest="52" Padding="0" StrokeThickness="0">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="12"/>
@@ -94,42 +237,19 @@
                         </Border.GestureRecognizers>
                         <Grid>
                             <Label x:Name="SubmitLbl"
-                        Text="บล็อกเบอร์นี้"
-                        TextColor="White" FontSize="15" FontAttributes="Bold"
-                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                                   Text="บล็อกเบอร์/บัญชีนี้"
+                                   TextColor="White" FontSize="15" FontAttributes="Bold"
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
                             <ActivityIndicator x:Name="SubmitLoader"
-                        IsRunning="False" IsVisible="False"
-                        Color="White"
-                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                                               IsRunning="False" IsVisible="False"
+                                               Color="White"
+                                               HorizontalOptions="Center" VerticalOptions="Center"/>
                         </Grid>
                     </Border>
                 </Grid>
+
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Submit Button -->
-        <!--
-        <Border Grid.Row="2" BackgroundColor="White" Padding="24,16" StrokeThickness="0">
-            <Border.Shadow>
-                <Shadow Brush="Black" Offset="0,-2" Radius="8" Opacity="0.06"/>
-            </Border.Shadow>
-            <Border BackgroundColor="#7C3AED" HeightRequest="52" Padding="0" StrokeThickness="0">
-                <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnSubmitTapped"/>
-                </Border.GestureRecognizers>
-                <Grid>
-                    <Label x:Name="SubmitLbl"
-                        Text="บล็อกเบอร์นี้"
-                        TextColor="White" FontSize="15" FontAttributes="Bold"
-                        HorizontalOptions="Center" VerticalOptions="Center"/>
-                    <ActivityIndicator x:Name="SubmitLoader"
-                        IsRunning="False" IsVisible="False"
-                        Color="White"
-                        HorizontalOptions="Center" VerticalOptions="Center"/>
-                </Grid>
-            </Border>
-        </Border>
-        -->
     </Grid>
 </ContentPage>

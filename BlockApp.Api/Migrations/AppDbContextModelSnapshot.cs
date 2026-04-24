@@ -17,33 +17,50 @@ namespace BlockApp.Api.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
 
-            modelBuilder.Entity("BlockApp.Shared.Entities.BlockNumber", b =>
+            modelBuilder.Entity("BlockApp.Shared.Entities.BlockEntry", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AccountHolderName")
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AccountNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AddedByUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BankName")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Note")
-                        .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                    b.Property<int>("EntryType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId", "PhoneNumber")
-                        .IsUnique();
+                    b.HasIndex("AddedByUserId");
 
-                    b.ToTable("BlockNumbers", (string)null);
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique()
+                        .HasFilter("\"PhoneNumber\" IS NOT NULL");
+
+                    b.HasIndex("BankName", "AccountNumber")
+                        .IsUnique()
+                        .HasFilter("\"AccountNumber\" IS NOT NULL");
+
+                    b.ToTable("BlockEntries", (string)null);
                 });
 
             modelBuilder.Entity("BlockApp.Shared.Entities.OtpCode", b =>
@@ -351,13 +368,51 @@ namespace BlockApp.Api.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("BlockApp.Shared.Entities.BlockNumber", b =>
+            modelBuilder.Entity("BlockApp.Shared.Entities.UserBlockEntry", b =>
                 {
-                    b.HasOne("BlockApp.Shared.Entities.User", null)
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BlockEntryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OtherReason")
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Reasons")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlockEntryId");
+
+                    b.HasIndex("UserId", "BlockEntryId")
+                        .IsUnique();
+
+                    b.ToTable("UserBlockEntries", (string)null);
+                });
+
+            modelBuilder.Entity("BlockApp.Shared.Entities.BlockEntry", b =>
+                {
+                    b.HasOne("BlockApp.Shared.Entities.User", "AddedBy")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("AddedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AddedBy");
                 });
 
             modelBuilder.Entity("BlockApp.Shared.Entities.Payment", b =>
@@ -408,6 +463,30 @@ namespace BlockApp.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BlockApp.Shared.Entities.UserBlockEntry", b =>
+                {
+                    b.HasOne("BlockApp.Shared.Entities.BlockEntry", "BlockEntry")
+                        .WithMany("UserBlockEntries")
+                        .HasForeignKey("BlockEntryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlockApp.Shared.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BlockEntry");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BlockApp.Shared.Entities.BlockEntry", b =>
+                {
+                    b.Navigation("UserBlockEntries");
                 });
 #pragma warning restore 612, 618
         }

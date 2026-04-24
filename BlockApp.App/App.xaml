@@ -2,7 +2,7 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:BlockApp.App"
-             xmlns:pages="clr-namespace:BlockApp.App.Pages"
+             xmlns:controls="clr-namespace:BlockApp.App.Controls"
              x:Class="BlockApp.App.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,7 +12,13 @@
             </ResourceDictionary.MergedDictionaries>
             
             <!-- Converters -->
-            <pages:IsNotZeroConverter x:Key="IsNotZeroConverter" />
+            <controls:IsNotZeroConverter x:Key="IsNotZeroConverter" />
+            <controls:NullToBoolConverter x:Key="NullToBoolConverter" />
+            <controls:HistoryActionLabelConverter x:Key="HistoryActionLabelConverter" />
+            <controls:BlockReasonLabelConverter x:Key="BlockReasonLabelConverter" />
+            <controls:BlockReasonChipsConverter x:Key="BlockReasonChipsConverter" />
+            <controls:BlockReasonFlagConverter x:Key="BlockReasonFlagConverter" />
+            <controls:BlockEntryTypeIconConverter x:Key="BlockEntryTypeIconConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

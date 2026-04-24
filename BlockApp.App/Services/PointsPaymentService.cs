@@ -32,7 +32,7 @@ public class PointsPaymentService : IPointsPaymentService
     // Points APIs
     public async Task<decimal> GetBalanceAsync()
     {
-        var response = await _apiService.GetAsync<PointsBalanceDto>("blockapp/points/balance");
+        var response = await _apiService.GetAsync<PointsBalanceDto>("points/balance");
         return response.Balance;
     }
 
@@ -45,12 +45,12 @@ public class PointsPaymentService : IPointsPaymentService
             Note = note
         };
         
-        await _apiService.PostAsync<object>("blockapp/points/transfer", dto);
+        await _apiService.PostAsync<object>("points/transfer", dto);
     }
 
     public async Task<List<PointTransactionDto>> GetHistoryAsync(int page = 1)
     {
-        return await _apiService.GetAsync<List<PointTransactionDto>>($"blockapp/points/history?page={page}&pageSize=20");
+        return await _apiService.GetAsync<List<PointTransactionDto>>($"points/history?page={page}&pageSize=20");
     }
 
     public async Task RecordRewardAsync(string activityType, string? metadata = null)
@@ -61,18 +61,18 @@ public class PointsPaymentService : IPointsPaymentService
             Metadata = metadata
         };
         
-        await _apiService.PostAsync<object>("blockapp/points/reward", dto);
+        await _apiService.PostAsync<object>("points/reward", dto);
     }
 
     public async Task<Dictionary<string, decimal>> GetRewardRatesAsync()
     {
-        return await _apiService.GetAsync<Dictionary<string, decimal>>("blockapp/points/reward-rates");
+        return await _apiService.GetAsync<Dictionary<string, decimal>>("points/reward-rates");
     }
 
     // Payment APIs
     public async Task<List<PointsPackageDto>> GetPackagesAsync()
     {
-        return await _apiService.GetAsync<List<PointsPackageDto>>("blockapp/payment/packages");
+        return await _apiService.GetAsync<List<PointsPackageDto>>("payment/packages");
     }
 
     public async Task<PaymentResponseDto> CreatePaymentAsync(decimal amount)
@@ -83,11 +83,11 @@ public class PointsPaymentService : IPointsPaymentService
             PaymentMethod = "promptpay"
         };
         
-        return await _apiService.PostAsync<PaymentResponseDto>("blockapp/payment/create", dto);
+        return await _apiService.PostAsync<PaymentResponseDto>("payment/create", dto);
     }
 
     public async Task<PaymentStatusResponseDto> CheckPaymentStatusAsync(int paymentId)
     {
-        return await _apiService.GetAsync<PaymentStatusResponseDto>($"blockapp/payment/status/{paymentId}");
+        return await _apiService.GetAsync<PaymentStatusResponseDto>($"payment/status/{paymentId}");
     }
 }

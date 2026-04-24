@@ -1,3 +1,4 @@
+using BlockApp.App.Models;
 using BlockApp.App.Services;
 
 namespace BlockApp.App.Pages;
@@ -54,6 +55,8 @@ public partial class EnterPinPage : ContentPage
         if (correct)
         {
             await _apiService.TryRestoreSessionAsync();
+            IPlatformApplication.Current!.Services.GetRequiredService<HistoryService>()
+                .Log(HistoryAction.Login);
             Application.Current!.Windows[0].Page = new NavigationPage(new MainPage());
         }
         else

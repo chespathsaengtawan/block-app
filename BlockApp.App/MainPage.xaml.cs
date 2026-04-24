@@ -23,6 +23,8 @@ public partial class MainPage : ContentPage
         HistoryViewEl.IsVisible = tab == 2;
         ProfileViewEl.IsVisible = tab == 3;
 
+        if (tab == 2) HistoryViewEl.LoadHistory();
+
         ApplyTabState(Tab1Pill, Tab1Icon, Tab1Lbl, tab == 0);
         ApplyTabState(Tab2Pill, Tab2Icon, Tab2Lbl, tab == 1);
         ApplyTabState(Tab3Pill, Tab3Icon, Tab3Lbl, tab == 2);
@@ -41,6 +43,8 @@ public partial class MainPage : ContentPage
 
     private async void OnFabTapped(object? sender, EventArgs e)
     {
-        await Navigation.PushModalAsync(new AddBlockPage(), animated: true);
+        var page = new AddBlockPage();
+        page.Disappearing += async (_, _) => await HomeViewEl.LoadAsync();
+        await Navigation.PushModalAsync(page, animated: true);
     }
 }

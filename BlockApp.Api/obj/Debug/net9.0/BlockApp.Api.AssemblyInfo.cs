@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlockApp.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6c94679a09e3b58fbda18cca10c127bb83344aba")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c1909f0585d28b82d2e32e343dc4c78c35982bfe")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlockApp.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlockApp.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

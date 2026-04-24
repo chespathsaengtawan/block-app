@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using BlockApp.Api.Data;
 using BlockApp.Shared.Entities;
+using BlockApp.Shared.DTOs.Points;
 
 namespace BlockApp.Api.Controllers;
 
@@ -21,6 +22,7 @@ public class PointsPackageController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous] // Allow public access to view packages
     public async Task<IActionResult> GetAll()
     {
         var packages = await _context.PointsPackages
@@ -30,6 +32,7 @@ public class PointsPackageController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous] // Allow public access to view a specific package
     public async Task<IActionResult> GetById(int id)
     {
         var package = await _context.PointsPackages.FindAsync(id);
@@ -114,19 +117,3 @@ public class PointsPackageController : ControllerBase
         return Ok(package);
     }
 }
-
-public record CreatePackageDto(
-    int Points,
-    decimal PriceTHB,
-    int? BonusPoints,
-    bool IsActive,
-    int DisplayOrder
-);
-
-public record UpdatePackageDto(
-    int Points,
-    decimal PriceTHB,
-    int? BonusPoints,
-    bool IsActive,
-    int DisplayOrder
-);

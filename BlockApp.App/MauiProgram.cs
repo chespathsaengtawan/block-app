@@ -20,6 +20,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<BlocklistCacheService>();
 		builder.Services.AddSingleton<ApiService>();
 		builder.Services.AddSingleton<PinService>();
+		builder.Services.AddSingleton<HistoryService>();
 		builder.Services.AddSingleton<ContactsService>();
 		builder.Services.AddSingleton<PointsPaymentService>();
 		builder.Services.AddTransient<SplashPage>();

@@ -119,7 +119,7 @@ public partial class OtpPage : ContentPage
 
         ResendLabel.IsEnabled = false;
 
-        var result = await _apiService.RequestOtpAsync(_phoneNumber);
+        var (result, error) = await _apiService.RequestOtpAsync(_phoneNumber);
 
         if (result != null)
         {
@@ -132,7 +132,7 @@ public partial class OtpPage : ContentPage
         else
         {
             ResendLabel.IsEnabled = true;
-            await DisplayAlert("เกิดข้อผิดพลาด", "ไม่สามารถส่ง OTP ได้ กรุณาลองใหม่อีกครั้ง", "ตกลง");
+            await DisplayAlert("เกิดข้อผิดพลาด", error ?? "ไม่สามารถส่ง OTP ได้ กรุณาลองใหม่อีกครั้ง", "ตกลง");
         }
     }
 

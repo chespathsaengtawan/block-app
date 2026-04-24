@@ -16,12 +16,12 @@ public partial class App : Application
 
 	protected override Window CreateWindow(IActivationState? activationState)
 	{
-		#if DEBUG
-		    return new Window(new NavigationPage(new MainPage()));
-		#else
+		//#if DEBUG
+		//    return new Window(new NavigationPage(new MainPage()));
+		//#else
 		var splashPage = _services.GetRequiredService<SplashPage>();
 		return new Window(new NavigationPage(splashPage));
-		#endif
+		//#endif
 
 	}
 

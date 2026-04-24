@@ -4,6 +4,33 @@
         <name>BlockApp.App</name>
     </assembly>
     <members>
+        <member name="T:BlockApp.App.Controls.BlockEntryTypeIconConverter">
+            <summary>Converts BlockEntryType to an emoji icon string.</summary>
+        </member>
+        <member name="T:BlockApp.App.Controls.NullToBoolConverter">
+            <summary>Returns true when the bound value is a non-null, non-empty string.</summary>
+        </member>
+        <member name="T:BlockApp.App.Controls.BlockReasonLabelConverter">
+            <summary>Converts BlockReason [Flags] enum to a Thai label string, e.g. "📵 โทรก่อกวน · 💸 หลอกโอนเงิน"</summary>
+        </member>
+        <member name="T:BlockApp.App.Controls.BlockReasonFlagConverter">
+            <summary>Returns true when the BlockReason value has the specific flag named by ConverterParameter.</summary>
+        </member>
+        <member name="T:BlockApp.App.Controls.BlockReasonChipsConverter">
+            <summary>Converts BlockReason [Flags] to List&lt;string&gt; — one chip per active flag.</summary>
+        </member>
+        <member name="T:BlockApp.App.Controls.HistoryActionLabelConverter">
+            <summary>Converts a HistoryAction enum to a human-readable Thai label string.</summary>
+        </member>
+        <member name="P:BlockApp.App.Models.HistoryEntry.Target">
+            <summary>เบอร์โทร หรือ เลขบัญชีธนาคาร</summary>
+        </member>
+        <member name="P:BlockApp.App.Models.HistoryEntry.BankName">
+            <summary>BankName (สำหรับบัญชีธนาคาร)</summary>
+        </member>
+        <member name="P:BlockApp.App.Models.HistoryEntry.Note">
+            <summary>หมายเหตุ / เหตุผลเพิ่มเติม</summary>
+        </member>
         <member name="M:BlockApp.App.Services.BlocklistCacheService.Normalize(System.String)">
             <summary>
             Normalize phone number to Thai local format (0xxxxxxxxx) for comparison.

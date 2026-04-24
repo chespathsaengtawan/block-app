@@ -9,7 +9,8 @@ namespace BlockApp.Api.Data
     {
         public DbSet<User> Users => Set<User>();
         public DbSet<OtpCode> OtpCodes => Set<OtpCode>();
-        public DbSet<BlockNumber> BlockNumbers => Set<BlockNumber>();
+        public DbSet<BlockEntry> BlockEntries => Set<BlockEntry>();
+        public DbSet<UserBlockEntry> UserBlockEntries => Set<UserBlockEntry>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<PointTransaction> PointTransactions => Set<PointTransaction>();
         public DbSet<Payment> Payments => Set<Payment>();
@@ -25,7 +26,8 @@ namespace BlockApp.Api.Data
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new OtpCodeConfiguration());
-            modelBuilder.ApplyConfiguration(new BlockNumberConfiguration());
+            modelBuilder.ApplyConfiguration(new BlockEntryConfiguration());
+            modelBuilder.ApplyConfiguration(new UserBlockEntryConfiguration());
             modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
 
             // Seed default points packages

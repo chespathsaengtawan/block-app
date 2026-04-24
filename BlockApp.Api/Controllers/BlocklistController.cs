@@ -1,78 +1,52 @@
-using System.Linq;
-using System.Threading.Tasks;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using BlockApp.Shared.DTOs.Blocklist;
-using BlockApp.Shared.Entities;
-using BlockApp.Api.Data;
+using BlockApp.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
-namespace BlockApp.Api.Controllers
+namespace BlockApp.Api.Controllers;
+
+[ApiController]
+[Authorize]
+[Route("blockapp/blocklist")]
+public class BlocklistController : ControllerBase
 {
-    [ApiController]
-    [Authorize]
-    [Route("blockapp/blocklist")]
-    public class BlocklistController : ControllerBase
+    private readonly IBlocklistService _service;
+
+    public BlocklistController(IBlocklistService service)
     {
-        private readonly AppDbContext _db;
+        _service = service;
+    }
 
-        public BlocklistController(AppDbContext db)
+    private int CurrentUserId =>
+        int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+            ?? throw new InvalidOperationException("User ID claim not found"));
+
+    [HttpGet]
+    public async Task<IEnumerable<BlockEntryDto>> Get()
+        => await _service.GetBlocklistAsync(CurrentUserId);
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateBlockEntryDto dto)
+    {
+        try
         {
-            _db = db;
+            var result = await _service.AddBlockEntryAsync(CurrentUserId, dto);
+            return result.AlreadyExisted ? Ok(result) : CreatedAtAction(nameof(Get), result);
         }
-
-        private int CurrentUserId =>
-            int.Parse(User.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
-
-        [HttpGet]
-        public async Task<IEnumerable<BlockNumberDto>> Get()
+        catch (ArgumentException ex)
         {
-            return await _db.BlockNumbers
-                .Where(x => x.UserId == CurrentUserId)
-                .Select(x => new BlockNumberDto
-                {
-                    Id = x.Id,
-                    PhoneNumber = x.PhoneNumber,
-                    Note = x.Note,
-                    CreatedAt = x.CreatedAt
-                })
-                .ToListAsync();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(BlockNumberCreateDto dto)
-        {
-            var entity = new BlockNumber
-            {
-                UserId = CurrentUserId,
-                PhoneNumber = dto.PhoneNumber,
-                Note = dto.Note,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            _db.BlockNumbers.Add(entity);
-            await _db.SaveChangesAsync();
-
-            return Ok();
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var entity = await _db.BlockNumbers
-                .FirstOrDefaultAsync(x => x.Id == id &&
-                                          x.UserId == CurrentUserId);
-
-            if (entity == null)
-                return NotFound();
-
-            _db.BlockNumbers.Remove(entity);
-            await _db.SaveChangesAsync();
-
-            return NoContent();
+            return BadRequest(new { error = ex.Message });
         }
     }
 
+    /// <summary>ลบรายการบล็อก — ใช้ UserBlockEntryId (ไม่ใช่ BlockEntryId)</summary>
+    [HttpDelete("{userBlockEntryId:int}")]
+    public async Task<IActionResult> Delete(int userBlockEntryId)
+    {
+        var deleted = await _service.DeleteBlockEntryAsync(CurrentUserId, userBlockEntryId);
+        return deleted ? NoContent() : NotFound();
+    }
 }
