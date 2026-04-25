@@ -44,7 +44,7 @@
                        HorizontalTextAlignment="Center"
                        Margin="0,0,0,8"/>
 
-                <Label Text="Set a 6-digit PIN to secure your app"
+                <Label Text="กรุณาสร้างรหัส PIN 6 หลักสำหรับการเข้าสู่ระบบและยืนยันตัวตนของคุณ"
                        FontSize="14" TextColor="#6B7280"
                        HorizontalTextAlignment="Center"
                        Margin="0,0,0,40"/>

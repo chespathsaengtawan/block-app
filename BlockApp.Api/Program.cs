@@ -220,6 +220,9 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseCors("BlockAppPolicy");
 
+// Serve static files (QR images in wwwroot/qr/)
+app.UseStaticFiles();
+
 // Standard ASP.NET middleware
 app.UseAuthentication();
 app.UseAuthorization();

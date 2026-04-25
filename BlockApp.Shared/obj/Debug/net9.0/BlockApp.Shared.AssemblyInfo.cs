@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlockApp.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c1909f0585d28b82d2e32e343dc4c78c35982bfe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef21283cd3b27f2484c37c1e64dbff6a5b9bcd5f")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlockApp.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlockApp.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

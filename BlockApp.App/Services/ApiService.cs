@@ -19,10 +19,11 @@ public class ApiService
     // Physical device: ใช้ IP จริงของ PC (ต้องอยู่ Wi-Fi เดียวกัน)
     // Emulator: 10.0.2.2 → host machine localhost
 #if ANDROID
-    private const string BaseUrl = "http://10.156.89.22:5073";
+    private const string BaseUrlConst = "http://10.156.89.22:5073";
 #else
-    private const string BaseUrl = "http://localhost:5073";
+    private const string BaseUrlConst = "http://localhost:5073";
 #endif
+    public string BaseUrl => BaseUrlConst;
 
     public string? AccessToken { get; private set; }
 
@@ -273,6 +274,13 @@ public class ApiService
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<T>(_jsonOptions) 
             ?? throw new Exception("Failed to deserialize response");
+    }
+
+    public async Task<byte[]> GetBytesAsync(string endpoint)
+    {
+        var response = await _httpClient.GetAsync($"/blockapp/{endpoint}");
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsByteArrayAsync();
     }
 
     public async Task<T> PostAsync<T>(string endpoint, object data)

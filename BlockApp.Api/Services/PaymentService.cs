@@ -4,6 +4,7 @@ using BlockApp.Shared.DTOs.Points;
 using BlockApp.Api.Data;
 using BlockApp.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using Omise.Models;
 
 namespace BlockApp.Api.Services;
@@ -14,17 +15,20 @@ public class PaymentService : IPaymentService
     private readonly IOmiseService _omiseService;
     private readonly IPointsService _pointsService;
     private readonly ILogger<PaymentService> _logger;
+    private readonly IWebHostEnvironment _env;
 
     public PaymentService(
         AppDbContext context, 
         IOmiseService omiseService, 
         IPointsService pointsService,
-        ILogger<PaymentService> logger)
+        ILogger<PaymentService> logger,
+        IWebHostEnvironment env)
     {
         _context = context;
         _omiseService = omiseService;
         _pointsService = pointsService;
         _logger = logger;
+        _env = env;
     }
 
     public async Task<List<PointsPackageDto>> GetPointsPackagesAsync()
@@ -71,7 +75,20 @@ public class PaymentService : IPaymentService
             // Create Omise charge
             var chargeResult = await _omiseService.CreatePromptPayChargeAsync(
                 dto.Amount, 
-                $"«×éÍáµéÁ {pointsAmount} áµéÁ");
+                $"à¹€à¸•à¸´à¸¡ {pointsAmount} à¹à¸•à¹‰à¸¡");
+
+            // Save QR image as static file and get public URL
+            string? qrPublicUrl = null;
+            if (chargeResult.QrImageBytes != null && chargeResult.QrImageBytes.Length > 0)
+            {
+                var qrDir = Path.Combine(_env.WebRootPath ?? "wwwroot", "qr");
+                Directory.CreateDirectory(qrDir);
+                var qrFilename = $"{Guid.NewGuid()}.png";
+                var qrFilePath = Path.Combine(qrDir, qrFilename);
+                await File.WriteAllBytesAsync(qrFilePath, chargeResult.QrImageBytes);
+                qrPublicUrl = $"/qr/{qrFilename}";
+                _logger.LogInformation("QR image saved to {Path}", qrFilePath);
+            }
 
             // Save payment record
             var payment = new Payment
@@ -83,11 +100,13 @@ public class PaymentService : IPaymentService
                 OmiseChargeId = chargeResult.ChargeId,
                 OmiseSourceId = chargeResult.SourceId,
                 PaymentMethod = dto.PaymentMethod,
-                QrCodeUrl = chargeResult.QrCodeUrl,
+                QrCodeUrl = qrPublicUrl,
                 PointsAmount = pointsAmount,
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = chargeResult.ExpiresAt
             };
+
+            Console.WriteLine($"Creating payment for user {payment}");
 
             _context.Payments.Add(payment);
             await _context.SaveChangesAsync();
@@ -99,9 +118,9 @@ public class PaymentService : IPaymentService
             {
                 PaymentId = payment.Id,
                 Status = payment.Status,
-                QrCodeUrl = payment.QrCodeUrl,
                 OmiseChargeId = payment.OmiseChargeId,
                 PointsAmount = payment.PointsAmount,
+                QrCodeUrl = qrPublicUrl,
                 ExpiresAt = payment.ExpiresAt ?? DateTime.UtcNow.AddMinutes(15)
             };
         }
@@ -134,13 +153,17 @@ public class PaymentService : IPaymentService
         try
         {
             var charge = await _omiseService.GetChargeStatusAsync(payment.OmiseChargeId!);
-            
-            if (charge.Status.ToString() == "successful" && payment.Status != "Success")
+            Console.WriteLine($"Charge status for payment {payment.OmiseChargeId}: {charge.Status}");
+            Console.WriteLine($"Payment record status: {payment.Status}");
+
+            if (charge.Status.ToString() == "Successful" && payment.Status != "Success")
             {
+                Console.WriteLine($"Payment {payment.Id} is successful. Processing points addition.");
                 await ProcessSuccessfulPaymentAsync(payment);
             }
             else if (charge.Status.ToString() == "failed")
             {
+                
                 payment.Status = "Failed";
                 await _context.SaveChangesAsync();
             }
@@ -158,6 +181,22 @@ public class PaymentService : IPaymentService
             _logger.LogError(ex, "Error checking payment status for payment {PaymentId}", paymentId);
             throw;
         }
+    }
+
+    public async Task<byte[]?> GetPaymentQrAsync(int paymentId, int userId)
+    {
+        var payment = await _context.Payments.FindAsync(paymentId);
+        if (payment == null || payment.UserId != userId || string.IsNullOrEmpty(payment.QrCodeUrl))
+            return null;
+
+        // QrCodeUrl is a relative path like /qr/{guid}.png â€” read from disk
+        var relativePath = payment.QrCodeUrl.TrimStart('/').Replace('/', Path.DirectorySeparatorChar);
+        var filePath = Path.Combine(_env.WebRootPath ?? "wwwroot", relativePath);
+
+        if (!File.Exists(filePath))
+            return null;
+
+        return await File.ReadAllBytesAsync(filePath);
     }
 
     public async Task<bool> ProcessWebhookAsync(string chargeId, string status)
@@ -202,12 +241,13 @@ public class PaymentService : IPaymentService
         {
             payment.Status = "Success";
             payment.PaidAt = DateTime.UtcNow;
-
+            
+            Console.WriteLine($"Processing successful payment {payment.Id} for user {payment.UserId}, points to add: {payment.PointsAmount}");
             // Add points to user
             await _pointsService.AddPointsAsync(
                 payment.UserId, 
                 payment.PointsAmount, 
-                $"«×éÍáµéÁ {payment.Amount} ºÒ·",
+                $"à¸Šà¸³à¸£à¸°à¹€à¸‡à¸´à¸™ {payment.Amount} à¸šà¸²à¸— à¸”à¹‰à¸§à¸¢ {payment.PaymentMethod}",
                 payment.OmiseChargeId);
 
             await _context.SaveChangesAsync();

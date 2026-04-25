@@ -10,5 +10,6 @@ public interface IPaymentService
     Task<bool> ProcessWebhookAsync(string chargeId, string status);
     Task<List<PointsPackageDto>> GetPointsPackagesAsync();
     int CalculatePointsFromAmount(decimal amount, List<PointsPackageDto> packages);
+    Task<byte[]?> GetPaymentQrAsync(int paymentId, int userId);
 }
 

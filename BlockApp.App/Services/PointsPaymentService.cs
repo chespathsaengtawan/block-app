@@ -18,6 +18,7 @@ public interface IPointsPaymentService
     Task<List<PointsPackageDto>> GetPackagesAsync();
     Task<PaymentResponseDto> CreatePaymentAsync(decimal amount);
     Task<PaymentStatusResponseDto> CheckPaymentStatusAsync(int paymentId);
+    Task<byte[]> GetQrImageBytesAsync(int paymentId);
 }
 
 public class PointsPaymentService : IPointsPaymentService
@@ -89,5 +90,10 @@ public class PointsPaymentService : IPointsPaymentService
     public async Task<PaymentStatusResponseDto> CheckPaymentStatusAsync(int paymentId)
     {
         return await _apiService.GetAsync<PaymentStatusResponseDto>($"payment/status/{paymentId}");
+    }
+
+    public async Task<byte[]> GetQrImageBytesAsync(int paymentId)
+    {
+        return await _apiService.GetBytesAsync($"payment/{paymentId}/qr");
     }
 }

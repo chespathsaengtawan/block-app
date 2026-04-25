@@ -3,6 +3,7 @@ using BlockApp.Shared.DTOs.Points;
 using BlockApp.Api.Data;
 using BlockApp.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BlockApp.Api.Services;
 
@@ -34,8 +35,11 @@ public class PointsService : IPointsService
 
     public async Task<PointTransaction> AddPointsAsync(int userId, decimal amount, string description, string? referenceId = null)
     {
-        using var transaction = await _context.Database.BeginTransactionAsync();
-        
+        var ownTransaction = _context.Database.CurrentTransaction == null;
+        IDbContextTransaction? transaction = ownTransaction
+            ? await _context.Database.BeginTransactionAsync()
+            : null;
+
         try
         {
             var user = await _context.Users.FindAsync(userId);
@@ -58,23 +62,33 @@ public class PointsService : IPointsService
 
             _context.PointTransactions.Add(pointTransaction);
             await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
+
+            if (transaction != null)
+                await transaction.CommitAsync();
 
             _logger.LogInformation("Added {Amount} points to user {UserId}", amount, userId);
             return pointTransaction;
         }
         catch (Exception ex)
         {
-            await transaction.RollbackAsync();
+            if (transaction != null)
+                await transaction.RollbackAsync();
             _logger.LogError(ex, "Error adding points to user {UserId}", userId);
             throw;
+        }
+        finally
+        {
+            transaction?.Dispose();
         }
     }
 
     public async Task<PointTransaction> DeductPointsAsync(int userId, decimal amount, string description)
     {
-        using var transaction = await _context.Database.BeginTransactionAsync();
-        
+        var ownTransaction = _context.Database.CurrentTransaction == null;
+        IDbContextTransaction? transaction = ownTransaction
+            ? await _context.Database.BeginTransactionAsync()
+            : null;
+
         try
         {
             var user = await _context.Users.FindAsync(userId);
@@ -99,22 +113,32 @@ public class PointsService : IPointsService
 
             _context.PointTransactions.Add(pointTransaction);
             await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
+
+            if (transaction != null)
+                await transaction.CommitAsync();
 
             _logger.LogInformation("Deducted {Amount} points from user {UserId}", amount, userId);
             return pointTransaction;
         }
         catch (Exception ex)
         {
-            await transaction.RollbackAsync();
+            if (transaction != null)
+                await transaction.RollbackAsync();
             _logger.LogError(ex, "Error deducting points from user {UserId}", userId);
             throw;
+        }
+        finally
+        {
+            transaction?.Dispose();
         }
     }
 
     public async Task<PointTransaction> TransferPointsAsync(int fromUserId, string toPhoneNumber, decimal amount, string? note)
     {
-        using var transaction = await _context.Database.BeginTransactionAsync();
+        var ownTransaction = _context.Database.CurrentTransaction == null;
+        IDbContextTransaction? transaction = ownTransaction
+            ? await _context.Database.BeginTransactionAsync()
+            : null;
         
         try
         {
@@ -143,7 +167,7 @@ public class PointsService : IPointsService
                 Amount = -amount,
                 Type = "Transfer",
                 Status = "Completed",
-                Description = note ?? $"âÍ¹áµéÁãËé {toPhoneNumber}",
+                Description = note ?? $"ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {toPhoneNumber}",
                 RelatedUserId = toUser.Id,
                 CreatedAt = DateTime.UtcNow,
                 CompletedAt = DateTime.UtcNow
@@ -156,7 +180,7 @@ public class PointsService : IPointsService
                 Amount = amount,
                 Type = "Transfer",
                 Status = "Completed",
-                Description = note ?? $"ÃÑºáµéÁ¨Ò¡ {fromUser.PhoneNumber}",
+                Description = note ?? $"ï¿½Ñºï¿½ï¿½ï¿½ï¿½Ò¡ {fromUser.PhoneNumber}",
                 RelatedUserId = fromUserId,
                 CreatedAt = DateTime.UtcNow,
                 CompletedAt = DateTime.UtcNow
@@ -164,16 +188,23 @@ public class PointsService : IPointsService
 
             _context.PointTransactions.AddRange(senderTransaction, receiverTransaction);
             await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
+
+            if (transaction != null)
+                await transaction.CommitAsync();
 
             _logger.LogInformation("Transferred {Amount} points from user {FromUserId} to {ToUserId}", amount, fromUserId, toUser.Id);
             return senderTransaction;
         }
         catch (Exception ex)
         {
-            await transaction.RollbackAsync();
+            if (transaction != null)
+                await transaction.RollbackAsync();
             _logger.LogError(ex, "Error transferring points");
             throw;
+        }
+        finally
+        {
+            transaction?.Dispose();
         }
     }
 
@@ -202,7 +233,10 @@ public class PointsService : IPointsService
 
     public async Task<RewardActivity> RecordRewardActivityAsync(int userId, string activityType, decimal pointsEarned, string? metadata)
     {
-        using var transaction = await _context.Database.BeginTransactionAsync();
+        var ownTransaction = _context.Database.CurrentTransaction == null;
+        IDbContextTransaction? transaction = ownTransaction
+            ? await _context.Database.BeginTransactionAsync()
+            : null;
         
         try
         {
@@ -219,10 +253,12 @@ public class PointsService : IPointsService
             _context.RewardActivities.Add(activity);
 
             // Add points to user
-            await AddPointsAsync(userId, pointsEarned, $"ÃÒ§ÇÑÅ¨Ò¡: {activityType}");
+            await AddPointsAsync(userId, pointsEarned, $"ï¿½Ò§ï¿½ï¿½Å¨Ò¡: {activityType}");
 
             await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
+
+            if (transaction != null)
+                await transaction.CommitAsync();
 
             _logger.LogInformation("Recorded reward activity {ActivityType} for user {UserId}, earned {Points} points", 
                 activityType, userId, pointsEarned);
@@ -231,9 +267,14 @@ public class PointsService : IPointsService
         }
         catch (Exception ex)
         {
-            await transaction.RollbackAsync();
+            if (transaction != null)
+                await transaction.RollbackAsync();
             _logger.LogError(ex, "Error recording reward activity");
             throw;
+        }
+        finally
+        {
+            transaction?.Dispose();
         }
     }
 

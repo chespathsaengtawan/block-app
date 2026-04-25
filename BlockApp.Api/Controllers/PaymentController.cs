@@ -68,6 +68,20 @@ namespace BlockApp.Api.Controllers
             }
         }
 
+        [HttpGet("{paymentId}/qr")]
+        public async Task<IActionResult> GetPaymentQr(int paymentId)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+                return Unauthorized();
+
+            var bytes = await _paymentService.GetPaymentQrAsync(paymentId, userId);
+            if (bytes == null)
+                return NotFound();
+
+            return File(bytes, "image/png");
+        }
+
         [HttpPost("webhook")]
         [AllowAnonymous]
         public async Task<IActionResult> OmiseWebhook([FromBody] OmiseWebhookDto webhook)
@@ -107,17 +121,5 @@ namespace BlockApp.Api.Controllers
                 return StatusCode(500, new { Message = "Error processing webhook" });
             }
         }
-    }
-
-    public class OmiseWebhookDto
-    {
-        public string Key { get; set; } = string.Empty;
-        public WebhookData? Data { get; set; }
-    }
-
-    public class WebhookData
-    {
-        public string Id { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
     }
 }

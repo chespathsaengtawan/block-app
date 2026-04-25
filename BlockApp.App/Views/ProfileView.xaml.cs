@@ -99,7 +99,15 @@ public partial class ProfileView : ContentView
         {
             var services = IPlatformApplication.Current!.Services;
             var buyPointsPage = services.GetRequiredService<BuyPointsPage>();
-            
+
+            EventHandler? handler = null;
+            handler = (s, args) =>
+            {
+                buyPointsPage.Disappearing -= handler;
+                RefreshPointsBalance();
+            };
+            buyPointsPage.Disappearing += handler;
+
             var navigationPage = Application.Current!.Windows[0].Page as NavigationPage;
             if (navigationPage != null)
             {

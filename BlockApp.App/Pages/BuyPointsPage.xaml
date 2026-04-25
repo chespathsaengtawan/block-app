@@ -16,7 +16,7 @@
 
                 <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
                     <Label Text="ซื้อพอยต์" FontSize="20" FontAttributes="Bold" TextColor="#111827"/>
-                    <Label x:Name="BalanceLabel" Text="ยอดคงเหลือ: 0 พอยต์" FontSize="13" TextColor="#6B7280"/>
+                    <Label x:Name="BalanceLabel" Text="ยอดคงเหลือ : 0 พอยต์" FontSize="13" TextColor="#6B7280"/>
                 </VerticalStackLayout>
                 
                 <Border Grid.Column="1"
@@ -38,10 +38,8 @@
         <!-- Content -->
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="20" Spacing="16">
-
                 <!-- Packages -->
                 <Label Text="แพ็กเกจ" FontSize="16" FontAttributes="Bold" TextColor="#111827" Margin="0,8,0,8"/>
-                
                 <CollectionView x:Name="PackagesCollection" SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -57,7 +55,7 @@
                                                FontSize="18" FontAttributes="Bold" TextColor="#111827"/>
                                         <Label Text="{Binding PriceTHB, StringFormat='{0:N0}'}" 
                                                FontSize="14" TextColor="#6B7280"/>
-                                        <Label Text="{Binding BonusPoints, StringFormat='+ ⺹ {0} '}" 
+                                        <Label Text="{Binding BonusPoints, StringFormat='+ ฿ {0} '}" 
                                                FontSize="12" TextColor="#10B981" FontAttributes="Bold"
                                                IsVisible="{Binding BonusPoints, Converter={StaticResource IsNotZeroConverter}}"/>
                                     </VerticalStackLayout>
@@ -71,7 +69,6 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
                 <!-- Info -->
                 <Border BackgroundColor="#F0FDF4" Stroke="#BBF7D0" StrokeThickness="1" Padding="14,12" Margin="0,16,0,0">
                     <Border.StrokeShape><RoundRectangle CornerRadius="10"/></Border.StrokeShape>
@@ -82,9 +79,7 @@
                         <Label Text="การทำรายการอาจใช้เวลา 1-2 นาที" FontSize="12" TextColor="#166534"/>
                     </VerticalStackLayout>
                 </Border>
-
             </VerticalStackLayout>
         </ScrollView>
-
     </Grid>
 </ContentPage>

@@ -33,7 +33,19 @@ public class CreateChargeResult
 {
     public string ChargeId { get; set; } = string.Empty;
     public string SourceId { get; set; } = string.Empty;
-    public string QrCodeUrl { get; set; } = string.Empty;
+    public byte[]? QrImageBytes { get; set; }
     public string Status { get; set; } = string.Empty;
     public DateTime ExpiresAt { get; set; }
+}
+
+public class OmiseWebhookDto
+{
+    public string Key { get; set; } = string.Empty;
+    public WebhookData? Data { get; set; }
+}
+
+public class WebhookData
+{
+    public string Id { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
 }

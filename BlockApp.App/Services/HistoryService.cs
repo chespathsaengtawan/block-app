@@ -71,6 +71,9 @@ public class HistoryService
         HistoryAction.BlockAlreadyExisted => "➕ เพิ่มบล็อกที่มีอยู่แล้ว",
         HistoryAction.BlockDeleted     => "✅ ยกเลิกการบล็อก",
         HistoryAction.SessionRestored  => "🔄 กู้คืน session",
+        HistoryAction.TopUpSuccess     => "💳 เติมพอยต์สำเร็จ",
+        HistoryAction.TopUpFailed      => "❌ เติมพอยต์ไม่สำเร็จ",
+        HistoryAction.TopUpExpired     => "⏰ QR Code หมดอายุ",
         _                              => action.ToString()
     };
 
@@ -82,6 +85,9 @@ public class HistoryService
         HistoryAction.BlockAlreadyExisted => Color.FromArgb("#D97706"),
         HistoryAction.BlockDeleted     => Color.FromArgb("#059669"),
         HistoryAction.SessionRestored  => Color.FromArgb("#2563EB"),
+        HistoryAction.TopUpSuccess     => Color.FromArgb("#059669"),
+        HistoryAction.TopUpFailed      => Color.FromArgb("#DC2626"),
+        HistoryAction.TopUpExpired     => Color.FromArgb("#D97706"),
         _                              => Color.FromArgb("#374151")
     };
 }

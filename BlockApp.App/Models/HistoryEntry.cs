@@ -7,7 +7,10 @@ public enum HistoryAction
     BlockAdded,
     BlockAlreadyExisted,
     BlockDeleted,
-    SessionRestored
+    SessionRestored,
+    TopUpSuccess,
+    TopUpFailed,
+    TopUpExpired
 }
 
 public class HistoryEntry

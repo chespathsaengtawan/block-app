@@ -38,13 +38,13 @@
                 </Grid>
 
                 <!-- Title -->
-                <Label Text="Confirm PIN"
+                <Label Text="ยืนยันรหัส PIN ของคุณ"
                        FontSize="24" FontAttributes="Bold"
                        TextColor="#111827"
                        HorizontalTextAlignment="Center"
                        Margin="0,0,0,8"/>
 
-                <Label Text="Enter your PIN again to confirm"
+                <Label Text="กรุณากรอกรหัส PIN อีกครั้งเพื่อยืนยัน"
                        FontSize="14" TextColor="#6B7280"
                        HorizontalTextAlignment="Center"
                        Margin="0,0,0,40"/>

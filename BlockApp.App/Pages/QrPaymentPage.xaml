@@ -23,9 +23,13 @@
                 <Border BackgroundColor="White" StrokeThickness="2" Stroke="#E5E7EB" 
                         Padding="20" HorizontalOptions="Center">
                     <Border.StrokeShape><RoundRectangle CornerRadius="16"/></Border.StrokeShape>
-                    <Image x:Name="QrCodeImage" 
-                           WidthRequest="250" HeightRequest="250"
-                           Aspect="AspectFit"/>
+                    <VerticalStackLayout Spacing="8">
+                        <Image x:Name="QrCodeImage"
+                               Aspect="AspectFit" BackgroundColor="gray"/>
+                        <Label x:Name="QrDebugLabel" Text="" FontSize="11" TextColor="#EF4444"
+                               HorizontalOptions="Center" HorizontalTextAlignment="Center"
+                               MaximumWidthRequest="250"/>
+                    </VerticalStackLayout>
                 </Border>
 
                 <!-- Amount Info -->
