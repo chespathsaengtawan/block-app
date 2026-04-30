@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlockApp.App")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+ef21283cd3b27f2484c37c1e64dbff6a5b9bcd5f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+23e32b3f868f0f2b4f3d44a07a91d167f03f43bf")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlockApp.App")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlockApp.App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
